@@ -1,23 +1,23 @@
 import re
+import copy
 
 
 def repeat_of_words(text: str):
 
     list_of_words = text.split(" ")
-    new_word = ""
     dict_of_words = dict()
 
     for word in list_of_words:
+        new_word = ""
         for i in range(len(word)):
             if "A" <= word[i] <= "Z" or "a" <= word[i] <= "z" \
                     or word[i] in ["'", "-"]:
-                new_word += word[i]
+                new_word += word[i].lower()
         if new_word:
             if new_word in dict_of_words.keys():
                 dict_of_words[new_word] += 1
             else:
                 dict_of_words[new_word] = 1
-            new_word = ""
     return dict_of_words
 
 
@@ -44,12 +44,23 @@ def median_number_of_words(text: str):
     if length % 2:
         return sentence_lens[int((length - 1) / 2)]
     else:
-        return (sentence_lens[int(length / 2)] + sentence_lens[int(length / 2 - 1)]) / 2
+        return (sentence_lens[int(length / 2)] +
+                sentence_lens[int(length / 2 - 1)]) / 2
 
-# r'(?<=[?!.] )[A-Z][,.\-"; \'a-zA-Z0-9]+(?=[?!.] [A-Z])'
+
 def split_text_to_sent(text: str):
 
     text += " A"
+    for match in re.finditer(r'(Mr|Mrs|Ms|Dr|St)[.] [A-Z]', text):
+        text = text[:match.start(0)] + \
+               text[match.start(0)].lower() + \
+               text[match.start(0) + 1:match.end(0) - 1] + \
+               text[match.end(0) - 1].lower() + \
+               text[match.end(0):]
+    for match in re.finditer(r'[.] (mr|mrs|ms|dr|st)', text):
+        text = text[:match.start(1)] + \
+               text[match.start(1)].upper() + \
+               text[match.start(1) + 1:]
     list_of_sentences = re.findall(r'(?<=[?!.] )[A-Z][,.\-"; \'a-z]+(?=[?!.] [A-Z])', text)
     if not len(list_of_sentences):
         list_of_sentences = re.findall(r'([A-Z][,.\-"; \'a-z]+)(?=[?!.])', text)
@@ -101,20 +112,20 @@ if __name__ == '__main__':
     else:
         N = int(N)
 
-    # text = input("Please enter a text: ")
+    # text = input("Please enter a text: \n")
     # K = int(input("Please enter number of top N-grams, K: "))
     # N = int(input("Please enter N: "))
 
-    dict_of_words = repeat_of_words(text)
+    dict_of_words = repeat_of_words(copy.deepcopy(text))
 
     for key in dict_of_words.keys():
         print(f"{key} - {dict_of_words[key]}")
 
-    print(f"Average number of words in sentence: {average_number_of_words(text)}")
+    print(f"Average number of words in sentence: {average_number_of_words(copy.deepcopy(text))}")
 
-    print(f"Median number of words in sentence: {median_number_of_words(text)}")
+    print(f"Median number of words in sentence: {median_number_of_words(copy.deepcopy(text))}")
 
-    dict_of_n_grams = find_n_grams(text, N)
+    dict_of_n_grams = find_n_grams(copy.deepcopy(text), N)
 
     if K > len(dict_of_n_grams):
         print("K is too big!")

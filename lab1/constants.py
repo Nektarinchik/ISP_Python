@@ -1,0 +1,3 @@
+
+DEFAULT_K = 10
+DEFAULT_N = 4

@@ -1,4 +1,3 @@
-import copy
 import re
 
 
@@ -166,12 +165,12 @@ def find_n_grams(text: str, n: int):
 
 def get_info_about_text(text: str, n: int, k: int):
     get_info = print_repeated_words(repeat_of_words)
-    get_info(copy.deepcopy(text))
+    get_info(text)
     get_info = print_average_number_of_words(average_number_of_words)
-    get_info(copy.deepcopy(text))
+    get_info(text)
     get_info = print_median_number_of_words(median_number_of_words)
-    get_info(copy.deepcopy(text))
+    get_info(text)
     get_info = print_top_n_grams(find_n_grams)
-    get_info(copy.deepcopy(text), n, k)
+    get_info(text, n, k)
 
 

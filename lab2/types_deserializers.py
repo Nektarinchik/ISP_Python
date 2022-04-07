@@ -11,8 +11,10 @@ class JsonTypesDeserializer:
             return res
 
         json_str = json_str.strip()  # delete all control characters from json_str
+        json_str = f',{json_str},'  # we need this for correct work of algorithm
 
-        figure_brackets, square_brackets, quotation_marks = [], [], []
+        non_cont_obj = ''
+        figure_brackets, square_brackets, quotation_marks, commas = [], [], [], []
         start_figure_bracket, start_square_bracket, quotation_mark = '{', '[', '"'
         end_figure_bracket, end_square_bracket = '}', ']'
         for i in range(len(json_str)):
@@ -38,17 +40,49 @@ class JsonTypesDeserializer:
                         )
 
                         res.append(buff)
+                        continue
 
                     else:
                         start_of_match = i
                         quotation_marks.append(start_of_match)
 
                 elif json_str[i] == ',' \
-                    and not quotation_marks \
-                    and not figure_brackets \
-                    and not square_brackets:
+                        and not figure_brackets \
+                        and not square_brackets \
+                        and not quotation_marks:
 
+                    non_cont_obj = non_cont_obj.strip()
 
+                    if '"' in non_cont_obj \
+                            or '{' in non_cont_obj \
+                            or '[' in non_cont_obj \
+                            or not non_cont_obj:
+                        non_cont_obj = ''
+                        continue
+
+                    else:
+
+                        if non_cont_obj.isdigit() or '.' in non_cont_obj:  # then we have a number
+                            buff = JsonTypesDeserializer.number_deserializer(
+                                non_cont_obj
+                            )
+                            non_cont_obj = ''
+                            res.append(buff)
+                            continue
+
+                        elif non_cont_obj in ['true', 'false']:  # then we have a bool
+                            buff = JsonTypesDeserializer.bool_deserializer(
+                                non_cont_obj
+                            )
+                            non_cont_obj = ''
+                            res.append(buff)
+                            continue
+
+                        elif non_cont_obj == 'null':  # then we have a None
+                            buff = None
+                            non_cont_obj = ''
+                            res.append(buff)
+                            continue
 
                 elif json_str[i] == end_figure_bracket and not quotation_marks:
 
@@ -60,7 +94,8 @@ class JsonTypesDeserializer:
 
                         # вызвать функцию, что определит, что это: словарь, функция или класс
                         res.append(buff)
-                        
+                        continue
+
                     else:
                         del figure_brackets[-1]
 
@@ -73,9 +108,12 @@ class JsonTypesDeserializer:
                         )
 
                         res.append(buff)
+                        continue
 
                     else:
                         del square_brackets[-1]
+
+                non_cont_obj += json_str[i]
 
             except IndexError as er:
 
@@ -83,36 +121,6 @@ class JsonTypesDeserializer:
                 print(er)
 
                 return None
-
-        """if res is None then we have a sequence of numbers, bools or Nones"""
-        if not res:
-
-            sequence = json_str.split(',')
-            for item in sequence:
-                item = item.strip()
-
-                if item.isdigit() or '.' in item:  # then we have a number
-                    buff = JsonTypesDeserializer.number_deserializer(
-                        item
-                    )
-
-                    res.append(buff)
-
-                elif item in ['true', 'false']:  # then we have a bool
-                    buff = JsonTypesDeserializer.bool_deserializer(
-                        item
-                    )
-
-                    res.append(buff)
-
-                elif item == 'null':  # then we have a None
-                    buff = None
-
-                    res.append(buff)
-
-                else:
-
-                    return None
 
         return res
 
@@ -139,7 +147,13 @@ class JsonTypesDeserializer:
 
     @staticmethod
     def bool_deserializer(json_str: str) -> bool:
-        res = bool(json_str)
+        res = None
+
+        if json_str == 'true':
+            res = True
+
+        elif json_str == 'false':
+            res = False
 
         return res
 
@@ -162,7 +176,7 @@ class JsonTypesDeserializer:
                     start_of_match = i
                     square_brackets.append(start_of_match)
 
-                elif s[i] == quotation_mark\
+                elif s[i] == quotation_mark \
                         and len(square_brackets) == 1 | 0 \
                         and len(figure_brackets) == 1 | 0:
 

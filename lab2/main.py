@@ -70,10 +70,18 @@ if __name__ == '__main__':
     #     print(type(eval(res)))
 
     list1 = [
-        'str1',
-        'str2',
-        2,
-        'str3'
+        [
+            'str1',
+            'str2',
+            2,
+            3
+        ],
+        True,
+        [
+            'str1.1',
+            23,
+            'str2.2'
+        ]
     ]
     with open('car1.json', 'w') as f_obj:
         json_serializer.dump(list1, f_obj)

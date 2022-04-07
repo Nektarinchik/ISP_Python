@@ -1,4 +1,6 @@
 import json
+import types
+import dis
 
 from factory import SerializerFactory
 from serializer_types import SerializerTypes
@@ -17,6 +19,9 @@ class Car(Vehicle):
     def ride(self):
         print(f'"{self.__name} is riding now"')
 
+    def __hidden(self, name):
+        print(name)
+
 
 class Engine:
 
@@ -34,7 +39,46 @@ if __name__ == '__main__':
     json_serializer = SerializerFactory.create_serializer(SerializerTypes.json)
     engine1 = Engine(2)
     car1 = Car('bmw', engine1)
-    print(json_serializer.dump(Car, 'haha'))
-    '''list1 = [1,{'d':1},(1,2)]
-    print(json_serializer.dump(list1, 'haha'))'''
+    # dict1 = {
+    #     'float': 1.4568,
+    #     1.4568: 'float',
+    #     'int': 789,
+    #     789: 'int',
+    #     'list': [
+    #         1,
+    #         2,
+    #         456.2,
+    #         'end_list'
+    #     ],
+    #     'tuple': (
+    #         1,
+    #         2,
+    #         456.2,
+    #         'end_tuple'
+    #     ),
+    #     'bool': True,
+    #     'None': None,
+    # }
 
+    # print(json_serializer.dumps(inc))
+    # print(json.dumps(dict1, indent=2))
+    # with open('car1.json', 'w') as f_obj:
+    #     json_serializer.dump(car1, f_obj)
+    #
+    # with open('car1.json', 'r') as f_obj:
+    #     res = f_obj.read()
+    #     print(type(eval(res)))
+
+    list1 = [
+        'str1',
+        'str2',
+        2,
+        'str3'
+    ]
+    with open('car1.json', 'w') as f_obj:
+        json_serializer.dump(list1, f_obj)
+
+    with open('car1.json', 'r') as f_obj:
+        res = f_obj.read()
+
+        print(json_serializer.loads(res))

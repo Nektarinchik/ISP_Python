@@ -1,14 +1,16 @@
+import _io
 import abc
 import inspect
 import types
 
 import types_serializers
+import types_deserializers
 
 
 class Serializer:
 
     @abc.abstractmethod
-    def dump(self, obj, fp, indent=2):
+    def dump(self, obj, f_obj: _io.TextIOWrapper, indent=2):
         """Method that serialize Python object into the file"""
 
     @abc.abstractmethod
@@ -16,17 +18,22 @@ class Serializer:
         """Method that serialize Python object into the string"""
 
     @abc.abstractmethod
-    def load(self, fp):
+    def load(self, f_obj: _io.TextIOWrapper):
         """Method that deserialize Python object from file"""
 
     @abc.abstractmethod
-    def loads(self, s):
+    def loads(self, s: str):
         """Method that deserialize Python object from string"""
 
 
 class JsonSerializer(Serializer):
 
-    def dump(self, obj, fp, indent=2):
+    def dump(self, obj, f_obj: _io.TextIOWrapper, indent=2):
+        res = self.dumps(obj, indent=indent)
+
+        f_obj.write(res)
+
+    def dumps(self, obj, indent=2) -> str:
 
         try:
 
@@ -53,13 +60,13 @@ class JsonSerializer(Serializer):
                 temp = types_serializers.JsonTypesSerializer.int_serializer(
                     obj
                 )
-                res = f'"{temp}"'
+                res = temp
 
             elif isinstance(obj, float):
                 temp = types_serializers.JsonTypesSerializer.float_serializer(
                     obj
                 )
-                res = f'"{temp}"'
+                res = temp
 
             elif isinstance(obj, str):
                 res = f'"{obj}"'
@@ -86,11 +93,11 @@ class JsonSerializer(Serializer):
                 temp = types_serializers.JsonTypesSerializer.bool_serializer(
                     obj
                 )
-                res = f'"{temp}"'
+                res = temp
 
             elif isinstance(obj, types.NoneType):
                 temp = types_serializers.JsonTypesSerializer.none_serializer()
-                res = f'"{temp}"'
+                res = temp
 
             elif inspect.isclass(obj):
                 res = types_serializers.JsonTypesSerializer.class_serializer(
@@ -113,46 +120,44 @@ class JsonSerializer(Serializer):
         finally:
 
             if not res:
-
                 res = types_serializers.JsonTypesSerializer.none_serializer()
 
             return res
 
-    def dumps(self, obj, indent=2) -> str:
+    def load(self, f_obj: _io.TextIOWrapper):
         pass
 
-    def load(self, fp):
-        pass
+    def loads(self, s: str):
+        res = types_deserializers.JsonTypesDeserializer.json_string_deserializator(s)
 
-    def loads(self, s):
-        pass
+        return res
 
 
 class YamlSerializer(Serializer):
 
-    def dump(self, obj, fp, indent=2):
+    def dump(self, obj, f_obj: _io.TextIOWrapper, indent=2):
         pass
 
     def dumps(self, obj, indent=2) -> str:
         pass
 
-    def load(self, fp):
+    def load(self, f_obj: _io.TextIOWrapper):
         pass
 
-    def loads(self, s):
+    def loads(self, s: str):
         pass
 
 
 class TomlSerializer(Serializer):
 
-    def dump(self, obj, fp, indent=2):
+    def dump(self, obj, f_obj: _io.TextIOWrapper, indent=2):
         pass
 
     def dumps(self, obj, indent=2) -> str:
         pass
 
-    def load(self, fp):
+    def load(self, f_obj: _io.TextIOWrapper):
         pass
 
-    def loads(self, s):
+    def loads(self, s: str):
         pass

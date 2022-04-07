@@ -1,4 +1,3 @@
-import copy
 import inspect
 import types
 
@@ -37,26 +36,26 @@ class JsonTypesSerializer:
         """is a tuple containing the names of the local variables"""
         res_str += spaces
         co_varnames = func.__code__.co_varnames
-        buff = JsonTypesSerializer.tuple_serializer(co_varnames, indent=indent+4)
+        buff = JsonTypesSerializer.tuple_serializer(co_varnames, indent=indent+indent)
         res_str += f'"co_varnames": {buff},\n'
 
         """is a tuple containing the names used by the bytecode"""
         res_str += spaces
         co_names = func.__code__.co_names
-        buff = JsonTypesSerializer.tuple_serializer(co_names, indent=indent+4)
+        buff = JsonTypesSerializer.tuple_serializer(co_names, indent=indent+indent)
         res_str += f'"co_names": {buff},\n'
 
         """is a tuple containing the names of local variables that are
          referenced by nested functions"""
         res_str += spaces
         co_cellvars = func.__code__.co_cellvars
-        buff = JsonTypesSerializer.tuple_serializer(co_cellvars, indent=indent+4)
+        buff = JsonTypesSerializer.tuple_serializer(co_cellvars, indent=indent+indent)
         res_str += f'"co_cellvars": {buff},\n'
 
         """is a tuple containing the names of free variables"""
         res_str += spaces
         co_freevars = func.__code__.co_freevars
-        buff = JsonTypesSerializer.tuple_serializer(co_freevars, indent=indent+4)
+        buff = JsonTypesSerializer.tuple_serializer(co_freevars, indent=indent+indent)
         res_str += f'"co_freevars": {buff},\n'
 
         """is the number of positional-only arguments"""
@@ -96,7 +95,7 @@ class JsonTypesSerializer:
         """is a tuple containing the literals used by the bytecode"""
         res_str += spaces
         co_consts = func.__code__.co_consts
-        buff = JsonTypesSerializer.tuple_serializer(co_consts, indent=indent+4)
+        buff = JsonTypesSerializer.tuple_serializer(co_consts, indent=indent+indent)
         res_str += f'"co_consts": {buff},\n'
 
         """is an integer encoding a number of flags for the interpreter"""
@@ -111,9 +110,15 @@ class JsonTypesSerializer:
 
         return res_str
 
+    """method type - the type of methods of user-defined class instances"""
     @staticmethod
-    def class_method_serializer(meth: types.MethodType, indent: int) -> str:
-        pass
+    def class_instance_method_serializer(meth: types.MethodType, indent: int) -> str:
+        res = JsonTypesSerializer.user_def_function_serializer(
+            meth,
+            indent=indent
+        )
+
+        return res
 
     @staticmethod
     def lambda_function_serializer(func: types.LambdaType, indent: int) -> str:
@@ -178,7 +183,7 @@ class JsonTypesSerializer:
             res_str += spaces
             buff = JsonTypesSerializer.list_serializer(
                 list(obj.__bases__),
-                indent=indent+4
+                indent=indent+indent
             )
             res_str += f'"bases": {buff},\n'
 
@@ -186,7 +191,7 @@ class JsonTypesSerializer:
 
             buff = JsonTypesSerializer.dict_serializer(
                 obj.__dict__,
-                indent=indent+4
+                indent=indent+indent
             )
             res_str += f'"type_definition": {buff}\n'
 
@@ -228,14 +233,14 @@ class JsonTypesSerializer:
         res_str += spaces
         buff = JsonTypesSerializer.class_serializer(
             obj.__class__,
-            indent=indent+4
+            indent=indent+indent
         )
         res_str += f'"class_definition": {buff},\n'
 
         res_str += spaces
         buff = JsonTypesSerializer.dict_serializer(
             obj.__dict__,
-            indent=indent+4
+            indent=indent+indent
         )
         res_str += f'"object_definition": {buff}\n'
 
@@ -246,7 +251,14 @@ class JsonTypesSerializer:
 
     @staticmethod
     def int_serializer(obj: int) -> str:
-        res = str(obj)
+
+        if isinstance(obj, bool):
+            res = JsonTypesSerializer.bool_serializer(
+                obj
+            )
+
+        else:
+            res = str(obj)
 
         return res
 
@@ -274,25 +286,25 @@ class JsonTypesSerializer:
                 if isinstance(item, types.FunctionType):
                     buff = JsonTypesSerializer.user_def_function_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, types.MethodType):
-                    buff = JsonTypesSerializer.class_method_serializer(
+                    buff = JsonTypesSerializer.class_instance_method_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, types.LambdaType):
                     buff = JsonTypesSerializer.lambda_function_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, types.BuiltinFunctionType):
                     buff = JsonTypesSerializer.builtin_function_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, int):
@@ -313,19 +325,19 @@ class JsonTypesSerializer:
                 elif isinstance(item, list):
                     buff = JsonTypesSerializer.list_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, dict):
                     buff = JsonTypesSerializer.dict_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, tuple):
                     buff = JsonTypesSerializer.tuple_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif isinstance(item, bool):
@@ -341,13 +353,13 @@ class JsonTypesSerializer:
                 elif inspect.isclass(item):
                     buff = JsonTypesSerializer.class_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 elif inspect.isclass(type(item)):
                     buff = JsonTypesSerializer.class_instance_serializer(
                         item,
-                        indent=indent+4
+                        indent=indent+indent
                     )
 
                 else:
@@ -458,24 +470,24 @@ class JsonTypesSerializer:
                     elif isinstance(value, types.FunctionType):
                         value_buff = JsonTypesSerializer.user_def_function_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif isinstance(value, types.MethodType):
-                        value_buff = JsonTypesSerializer.class_method_serializer(
+                        value_buff = JsonTypesSerializer.class_instance_method_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif isinstance(value, types.LambdaType):
                         value_buff = JsonTypesSerializer.lambda_function_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif isinstance(value, types.BuiltinFunctionType):
                         value_buff = JsonTypesSerializer.builtin_function_serializer(
-                            value, indent=indent+4
+                            value, indent=indent+indent
                         )
 
                     elif isinstance(value, float):
@@ -490,19 +502,19 @@ class JsonTypesSerializer:
                     elif isinstance(value, list):
                         value_buff = JsonTypesSerializer.list_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif isinstance(value, dict):
                         value_buff = JsonTypesSerializer.dict_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif isinstance(value, tuple):
                         value_buff = JsonTypesSerializer.tuple_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif isinstance(value, bool):
@@ -518,13 +530,13 @@ class JsonTypesSerializer:
                     elif inspect.isclass(value):
                         value_buff = JsonTypesSerializer.class_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     elif inspect.isclass(type(value)):
                         value_buff = JsonTypesSerializer.class_instance_serializer(
                             value,
-                            indent=indent+4
+                            indent=indent+indent
                         )
 
                     else:
@@ -545,6 +557,11 @@ class JsonTypesSerializer:
                     else:
                         res_str += spaces
                         res_str += f'{key_buff}: {value_buff},\n'
+
+        """we need this conditional operator to close the dict"""
+        if res_str[-2] == ',':
+            res_str = res_str[:-2]
+            res_str += '\n'
 
         res_str += old_spaces
         res_str += '}'

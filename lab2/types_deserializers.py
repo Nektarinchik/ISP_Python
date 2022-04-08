@@ -12,7 +12,7 @@ class JsonTypesDeserializer:
             return res
 
         key_buff, value_buff = None, None  # in these variables we will store temporary values of key and value
-        is_list_el, is_dict_el, is_str_el, is_non_cont_el = False, False, False, True  #
+        is_list_el, is_dict_el, is_str_el, is_non_cont_el = False, False, False, True
         list_el, dict_el, str_el, non_cont_el = '', '', '', ''
         square_brackets, figure_brackets, quotation_marks = [], [], []
         start_figure_bracket, start_square_bracket, quotation_mark, colon = '{', '[', '"', ':'
@@ -32,7 +32,7 @@ class JsonTypesDeserializer:
 
             elif json_str[i] == start_figure_bracket \
                     and not quotation_marks \
-                    and len(figure_brackets) < 2\
+                    and len(figure_brackets) < 2 \
                     and len(square_brackets) == 0:
                 if len(figure_brackets) == 1:  # if len(figure_brackets) == 1 then it is a start of nested dictionary
                     figure_brackets.append(start_figure_bracket)
@@ -56,7 +56,7 @@ class JsonTypesDeserializer:
 
                 else:
                     quotation_marks.append(quotation_mark)  # if we have one quotation marks is empty
-                    is_str_el = True                        # then we start to record new string
+                    is_str_el = True  # then we start to record new string
                     continue
 
             elif json_str[i] == end_square_bracket \
@@ -77,7 +77,16 @@ class JsonTypesDeserializer:
                 if len(figure_brackets) == 1:  # it means that our dict has ended
 
                     if list_el:  # record the last item
-                        value_buff = JsonTypesDeserializer.array_deserializer(list_el)
+
+                        try:
+
+                            value_buff = JsonTypesDeserializer.array_deserializer(list_el)
+
+                        except JSONDecodeError as err:
+                            print(err)
+
+                            raise SystemExit(1)
+
                         res[key_buff] = value_buff
                         key_buff, value_buff = None, None
 
@@ -168,7 +177,16 @@ class JsonTypesDeserializer:
                     and len(square_brackets) == 0:  # in this case we record value
 
                 if list_el:
-                    value_buff = JsonTypesDeserializer.array_deserializer(list_el)
+
+                    try:
+
+                        value_buff = JsonTypesDeserializer.array_deserializer(list_el)
+
+                    except JSONDecodeError as err:
+                        print(err)
+
+                        raise SystemExit(1)
+
                     res[key_buff] = value_buff
                     key_buff, value_buff = None, None
                     list_el = ''
@@ -234,151 +252,190 @@ class JsonTypesDeserializer:
     @staticmethod
     def array_deserializer(json_str: str) -> list:
 
-        return [None]
-        # res = []
-        #
-        # if not json_str:
-        #     return res
-        #
-        # json_str = json_str.strip()  # delete all control characters from json_str
-        # json_str = f',{json_str},'  # we need this for correct work of algorithm
-        #
-        # non_cont_obj = ''
-        # figure_brackets, square_brackets, quotation_marks, commas = [], [], [], []
-        # start_figure_bracket, start_square_bracket, quotation_mark = '{', '[', '"'
-        # end_figure_bracket, end_square_bracket = '}', ']'
-        # for i in range(len(json_str)):
-        #
-        #     try:
-        #
-        #         if json_str[i] == start_figure_bracket and not quotation_marks:
-        #             start_of_match = i
-        #             figure_brackets.append(start_of_match)
-        #
-        #         elif json_str[i] == start_square_bracket and not quotation_marks:
-        #             start_of_match = i
-        #             square_brackets.append(start_of_match)
-        #
-        #         elif json_str[i] == quotation_mark \
-        #                 and not square_brackets \
-        #                 and not figure_brackets:  # we check if we are in another object
-        #
-        #             if quotation_marks:
-        #                 start_of_match = quotation_marks.pop()
-        #                 buff = JsonTypesDeserializer.string_deserializer(
-        #                     json_str[start_of_match + 1:i]
-        #                 )
-        #
-        #                 res.append(buff)
-        #                 continue
-        #
-        #             else:
-        #                 start_of_match = i
-        #                 quotation_marks.append(start_of_match)
-        #
-        #         elif json_str[i] == ',' \
-        #                 and not figure_brackets \
-        #                 and not square_brackets \
-        #                 and not quotation_marks:
-        #
-        #             non_cont_obj = non_cont_obj.strip()
-        #
-        #             if '"' in non_cont_obj \
-        #                     or '{' in non_cont_obj \
-        #                     or '[' in non_cont_obj \
-        #                     or not non_cont_obj:
-        #                 non_cont_obj = ''
-        #                 continue
-        #
-        #             else:
-        #
-        #                 if non_cont_obj.isdigit() or '.' in non_cont_obj:  # then we have a number
-        #
-        #                     try:
-        #
-        #                         buff = JsonTypesDeserializer.number_deserializer(
-        #                             non_cont_obj
-        #                         )
-        #
-        #                     except JSONDecodeError as err:
-        #
-        #                         print(err)
-        #                         raise SystemExit(1)
-        #
-        #                     non_cont_obj = ''
-        #                     res.append(buff)
-        #                     continue
-        #
-        #                 elif non_cont_obj in ['true', 'false']:  # then we have a bool
-        #
-        #                     try:
-        #
-        #                         buff = JsonTypesDeserializer.bool_deserializer(
-        #                             non_cont_obj
-        #                         )
-        #
-        #                     except JSONDecodeError as err:
-        #
-        #                         print(err)
-        #                         raise SystemExit(1)
-        #
-        #                     non_cont_obj = ''
-        #                     res.append(buff)
-        #                     continue
-        #
-        #                 elif non_cont_obj == 'null':  # then we have a None
-        #                     buff = None
-        #                     non_cont_obj = ''
-        #                     res.append(buff)
-        #                     continue
-        #
-        #         elif json_str[i] == end_figure_bracket and not quotation_marks:
-        #
-        #             if len(figure_brackets) == 1:
-        #                 start_of_match = figure_brackets.pop()
-        #                 buff = JsonTypesDeserializer.object_deserializer(
-        #                     json_str[start_of_match + 1:i]
-        #                 )
-        #
-        #                 # вызвать функцию, что определит, что это: словарь, функция или класс
-        #                 res.append(buff)
-        #                 continue
-        #
-        #             else:
-        #                 del figure_brackets[-1]
-        #
-        #         elif json_str[i] == end_square_bracket and not quotation_marks:
-        #
-        #             if len(square_brackets) == 1:
-        #                 start_of_match = square_brackets.pop()
-        #
-        #                 try:
-        #
-        #                     buff = JsonTypesDeserializer.array_deserializer(
-        #                         json_str[start_of_match + 1:i]
-        #                     )
-        #
-        #                 except JSONDecodeError as err:
-        #
-        #                     print(err)
-        #                     raise SystemExit(1)
-        #
-        #                 res.append(buff)
-        #                 continue
-        #
-        #             else:
-        #                 del square_brackets[-1]
-        #
-        #         non_cont_obj += json_str[i]
-        #
-        #     except IndexError as er:
-        #
-        #         """index error means that the JSON format is compiled incorrectly"""
-        #         print(er)
-        #
-        #         raise JSONDecodeError('incorrect JSON format')
-        #
-        # return res
+        res = []
+
+        if len(json_str) == 2:  # we have an empty dict
+
+            return res
+
+        is_list_el, is_dict_el, is_str_el, is_non_cont_el = False, False, False, True
+        list_el, dict_el, str_el, non_cont_el = '', '', '', ''
+        square_brackets, figure_brackets, quotation_marks = [], [], []
+        start_figure_bracket, start_square_bracket, quotation_mark = '{', '[', '"',
+        end_figure_bracket, end_square_bracket, comma = '}', ']', ','
+        for i in range(len(json_str)):
+
+            if json_str[i] == start_square_bracket \
+                    and not quotation_marks \
+                    and len(square_brackets) < 2 \
+                    and len(figure_brackets) == 0:
+                if len(square_brackets) == 1:
+                    square_brackets.append(start_square_bracket)
+                    is_list_el = True
+                    list_el += json_str[i]
+                    continue
+
+                else:
+                    square_brackets.append(start_square_bracket)
+                    continue
+
+            elif json_str[i] == start_figure_bracket \
+                    and not quotation_marks \
+                    and len(square_brackets) == 1 \
+                    and len(figure_brackets) == 0:
+                figure_brackets.append(start_figure_bracket)
+                is_dict_el = True
+                dict_el += json_str[i]
+                continue
+
+            elif json_str[i] == quotation_mark \
+                    and len(square_brackets) == 1 \
+                    and len(figure_brackets) == 0:
+
+                if quotation_marks:
+                    is_str_el = False
+                    non_cont_el = ''
+                    del quotation_marks[-1]
+                    continue
+
+                else:
+                    quotation_marks.append(quotation_mark)
+                    is_str_el = True
+                    continue
+
+            elif json_str[i] == end_figure_bracket \
+                    and not quotation_marks \
+                    and len(figure_brackets) == 1 \
+                    and len(square_brackets) == 1:
+                is_dict_el = False
+                dict_el += json_str[i]
+                non_cont_el = ''
+                del figure_brackets[-1]
+                continue
+
+            elif json_str[i] == end_square_bracket \
+                    and not quotation_marks \
+                    and 1 <= len(square_brackets) <= 2 \
+                    and len(figure_brackets) == 0:
+
+                if len(square_brackets) == 1:
+
+                    if list_el:
+
+                        try:
+
+                            buff = JsonTypesDeserializer.array_deserializer(list_el)
+
+                        except JSONDecodeError as err:
+                            print(err)
+
+                            raise SystemExit(1)
+
+                        res.append(buff)
+
+                        return res
+
+                    elif dict_el:
+                        buff = JsonTypesDeserializer.object_deserializer(dict_el)
+                        res.append(buff)
+
+                        return res
+
+                    elif str_el:
+                        buff = JsonTypesDeserializer.string_deserializer(str_el)
+                        res.append(buff)
+
+                        return res
+
+                    elif non_cont_el:
+
+                        try:
+
+                            buff = JsonTypesDeserializer.non_cont_deserializer(non_cont_el)
+
+                        except JSONDecodeError as err:
+                            print(err)
+
+                            raise SystemExit(1)
+
+                        res.append(buff)
+
+                        return res
+
+                else:
+                    list_el += json_str[i]
+                    is_list_el = False
+                    non_cont_el = ''
+                    del square_brackets[-1]
+                    continue
+
+            elif json_str[i] == comma \
+                    and not quotation_marks \
+                    and len(square_brackets) == 1 \
+                    and len(figure_brackets) == 0:
+
+                if list_el:
+
+                    try:
+
+                        buff = JsonTypesDeserializer.array_deserializer(list_el)
+
+                    except JSONDecodeError as err:
+                        print(err)
+
+                        raise SystemExit(1)
+
+                    res.append(buff)
+                    list_el = ''
+                    non_cont_el = ''
+                    continue
+
+                elif dict_el:
+                    buff = JsonTypesDeserializer.object_deserializer(dict_el)
+                    res.append(buff)
+                    dict_el = ''
+                    non_cont_el = ''
+                    continue
+
+                elif str_el:
+                    buff = JsonTypesDeserializer.string_deserializer(str_el)
+                    res.append(buff)
+                    str_el = ''
+                    non_cont_el = ''
+                    continue
+
+                elif non_cont_el:
+
+                    try:
+
+                        buff = JsonTypesDeserializer.non_cont_deserializer(non_cont_el)
+
+                    except JSONDecodeError as err:
+                        print(err)
+
+                        raise SystemExit(1)
+
+                    res.append(buff)
+                    non_cont_el = ''
+                    continue
+
+                else:
+
+                    raise JSONDecodeError('incorrect JSON format')
+
+            if is_dict_el:
+                dict_el += json_str[i]
+
+            if is_list_el:
+                list_el += json_str[i]
+
+            if is_str_el:
+                str_el += json_str[i]
+
+            if is_non_cont_el:
+                non_cont_el += json_str[i]
+
+        return res
 
     @staticmethod
     def string_deserializer(json_str: str) -> str:
@@ -429,7 +486,15 @@ class JsonTypesDeserializer:
                 return res
 
             elif temp == start_square_bracket:  # then we have an array
-                res = JsonTypesDeserializer.array_deserializer(s)
+
+                try:
+
+                    res = JsonTypesDeserializer.array_deserializer(s)
+
+                except JSONDecodeError as err:
+                    print(err)
+
+                    raise SystemExit(1)
 
                 return res
 

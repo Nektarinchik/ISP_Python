@@ -107,7 +107,7 @@ if __name__ == '__main__':
     }
 
     with open('car1.json', 'w') as f_obj:
-        json_serializer.dump(dict1, f_obj)
+        json_serializer.dump(list2, f_obj)
 
     with open('car1.json', 'r') as f_obj:
         res = f_obj.read()

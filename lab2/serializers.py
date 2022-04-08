@@ -6,6 +6,8 @@ import types
 import types_serializers
 import types_deserializers
 
+from exceptions import JSONDecodeError
+
 
 class Serializer:
 
@@ -128,9 +130,17 @@ class JsonSerializer(Serializer):
         pass
 
     def loads(self, s: str):
-        res = types_deserializers.JsonTypesDeserializer.json_string_deserializator(s)
 
-        return res
+        try:
+
+            res = types_deserializers.JsonTypesDeserializer.json_string_deserializer(s)
+
+            return res
+
+        except JSONDecodeError as err:
+
+            print(err)
+            raise SystemExit(1)
 
 
 class YamlSerializer(Serializer):

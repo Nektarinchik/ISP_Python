@@ -3,6 +3,7 @@ import types
 import dis
 
 from factory import SerializerFactory
+from types_deserializers import JsonTypesDeserializer
 from serializer_types import SerializerTypes
 
 
@@ -33,6 +34,10 @@ def inc(x: int):
     res = x + 1
 
     return res
+
+
+def f():
+    print('Hello')
 
 
 if __name__ == '__main__':
@@ -83,10 +88,30 @@ if __name__ == '__main__':
             'str2.2'
         ]
     ]
+
+    list2 = [
+        ['s[tr1',1,23],3
+    ]
+
+    dict1 = {
+        'dict1':{
+            'str]1': [],
+            'str2': 'str',
+            'str3': 3,
+            'str4': 4.2,
+            'str5': 'str5',
+            2:4,
+            2:'str',
+            2:[]
+        }
+    }
+
     with open('car1.json', 'w') as f_obj:
-        json_serializer.dump(list1, f_obj)
+        json_serializer.dump(dict1, f_obj)
 
     with open('car1.json', 'r') as f_obj:
         res = f_obj.read()
 
-        print(json_serializer.loads(res))
+        d1 = JsonTypesDeserializer.json_string_deserializer(res)
+        print(d1)
+

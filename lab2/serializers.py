@@ -113,6 +113,12 @@ class JsonSerializer(Serializer):
                     indent=indent
                 )
 
+            elif inspect.iscode(obj):
+                res = types_serializers.JsonTypesSerializer.code_object_serializer(
+                    obj,
+                    indent=indent
+                )
+
             else:
                 raise TypeError(f'Object of {type(obj)} is not JSON serializable')
 

@@ -1,3 +1,5 @@
+import types
+
 from exceptions import JSONDecodeError
 
 
@@ -104,6 +106,7 @@ class JsonTypesDeserializer:
 
                         res[key_buff] = value_buff
                         key_buff, value_buff = None, None
+                        res = JsonTypesDeserializer.get_python_type_from_object(res)
 
                         return res
 
@@ -113,6 +116,7 @@ class JsonTypesDeserializer:
                         )
                         res[key_buff] = value_buff
                         key_buff, value_buff = None, None
+                        res = JsonTypesDeserializer.get_python_type_from_object(res)
 
                         return res
 
@@ -122,6 +126,7 @@ class JsonTypesDeserializer:
                         )
                         res[key_buff] = value_buff
                         key_buff, value_buff = None, None
+                        res = JsonTypesDeserializer.get_python_type_from_object(res)
 
                         return res
 
@@ -140,6 +145,7 @@ class JsonTypesDeserializer:
 
                         res[key_buff] = value_buff
                         key_buff, value_buff = None, None
+                        res = JsonTypesDeserializer.get_python_type_from_object(res)
 
                         return res
 
@@ -289,60 +295,69 @@ class JsonTypesDeserializer:
         end_figure_bracket, end_square_bracket, comma = '}', ']', ','
         for i in range(len(json_str)):
 
-            if json_str[i] == start_square_bracket \
-                    and not quotation_marks \
-                    and len(square_brackets) < 2 \
-                    and len(figure_brackets) == 0:
-                if len(square_brackets) == 1:
+            if json_str[i] == start_square_bracket and not quotation_marks:
+                if len(square_brackets) == 1 and len(figure_brackets) == 0:
                     square_brackets.append(start_square_bracket)
                     is_list_el = True
                     list_el += json_str[i]
                     continue
 
-                else:
+                elif len(square_brackets) == 0 and len(figure_brackets) == 0:
                     square_brackets.append(start_square_bracket)
                     continue
 
-            elif json_str[i] == start_figure_bracket \
-                    and not quotation_marks \
-                    and len(square_brackets) == 1 \
-                    and len(figure_brackets) == 0:
-                figure_brackets.append(start_figure_bracket)
-                is_dict_el = True
-                dict_el += json_str[i]
-                continue
+                else:
+                    square_brackets.append(start_square_bracket)
 
-            elif json_str[i] == quotation_mark \
-                    and len(square_brackets) == 1 \
-                    and len(figure_brackets) == 0:
+            elif json_str[i] == start_figure_bracket and not quotation_marks:
 
-                if quotation_marks:
-                    is_str_el = False
-                    non_cont_el = ''
-                    del quotation_marks[-1]
+                if len(square_brackets) == 1 and len(figure_brackets) == 0:
+                    figure_brackets.append(start_figure_bracket)
+                    is_dict_el = True
+                    dict_el += json_str[i]
                     continue
 
                 else:
-                    quotation_marks.append(quotation_mark)
-                    is_str_el = True
+                    figure_brackets.append(start_figure_bracket)
+
+            elif json_str[i] == quotation_mark:
+
+                if len(square_brackets) == 1 and len(figure_brackets) == 0:
+
+                    if quotation_marks:
+                        is_str_el = False
+                        non_cont_el = ''
+                        del quotation_marks[-1]
+                        continue
+
+                    else:
+                        quotation_marks.append(quotation_mark)
+                        is_str_el = True
+                        continue
+
+                else:
+
+                    if quotation_marks:
+                        del quotation_marks[-1]
+
+                    else:
+                        quotation_marks.append(quotation_mark)
+
+            elif json_str[i] == end_figure_bracket and not quotation_marks:
+
+                if len(figure_brackets) == 1 and len(square_brackets) == 1:
+                    is_dict_el = False
+                    dict_el += json_str[i]
+                    non_cont_el = ''
+                    del figure_brackets[-1]
                     continue
 
-            elif json_str[i] == end_figure_bracket \
-                    and not quotation_marks \
-                    and len(figure_brackets) == 1 \
-                    and len(square_brackets) == 1:
-                is_dict_el = False
-                dict_el += json_str[i]
-                non_cont_el = ''
-                del figure_brackets[-1]
-                continue
+                else:
+                    del figure_brackets[-1]
 
-            elif json_str[i] == end_square_bracket \
-                    and not quotation_marks \
-                    and 1 <= len(square_brackets) <= 2 \
-                    and len(figure_brackets) == 0:
+            elif json_str[i] == end_square_bracket and not quotation_marks:
 
-                if len(square_brackets) == 1:
+                if len(square_brackets) == 1 and len(figure_brackets) == 0:
 
                     if list_el:
 
@@ -392,12 +407,19 @@ class JsonTypesDeserializer:
 
                         return res
 
-                else:
+                    else:
+
+                        raise JSONDecodeError('incorrect JSON format')
+
+                elif len(square_brackets) == 2 and len(figure_brackets) == 0:
                     list_el += json_str[i]
                     is_list_el = False
                     non_cont_el = ''
                     del square_brackets[-1]
                     continue
+
+                else:
+                    del square_brackets[-1]
 
             elif json_str[i] == comma \
                     and not quotation_marks \
@@ -558,3 +580,64 @@ class JsonTypesDeserializer:
             print(err)
 
             raise SystemExit(1)
+
+    @staticmethod
+    def get_python_type_from_object(obj: dict):
+        res = obj
+        try:
+            
+            type = obj['type']
+            
+            if type == 'FunctionType':
+                # res = JsonTypesDeserializer.get_function_from_dict(obj)
+                
+                return res
+                
+            elif type == 'ClassType':
+                # res = JsonTypesDeserializer.get_class_from_dict(obj)
+
+                return res
+
+            elif type == 'BuiltinFunctionType':
+                # res = JsonTypesDeserializer.get_builtin_function_from_dict(obj)
+
+                return res
+
+            elif type == 'ClassInstanceType':
+                # res = JsonTypesDeserializer.get_class_instance_form_dict(obj)
+
+                return res
+
+            elif type == 'CodeType':
+                # res = JsonTypesDeserializer.get_code_object_from_dict(obj)
+
+                return res
+
+            else:
+
+                return obj
+            
+        except KeyError as err:
+            
+            return obj
+        
+    @staticmethod
+    def get_function_from_dict(obj: dict) -> types.FunctionType:
+        pass
+    
+    @staticmethod
+    def get_builtin_function_from_dict(obj: dict) -> types.BuiltinFunctionType:
+        pass
+    
+    @staticmethod
+    def get_class_from_dict(obj: dict) -> type:
+        pass
+    
+    @staticmethod
+    def get_class_instance_form_dict(obj: dict) -> object:
+        pass
+    
+    @staticmethod
+    def get_code_object_from_dict(obj: dict) -> types.CodeType:
+        pass
+        

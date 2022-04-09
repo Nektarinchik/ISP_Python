@@ -2,6 +2,7 @@ import json
 import types
 import dis
 import inspect
+import math
 
 from factory import SerializerFactory
 from types_deserializers import JsonTypesDeserializer
@@ -19,7 +20,7 @@ class Car(Vehicle):
         self.__engine = engine
 
     def ride(self):
-        print(f'"{self.__name} is riding now"')
+        print(f'{self.__name} is riding now')
 
     def __hidden(self, name):
         print(name)
@@ -30,18 +31,20 @@ class Engine:
     def __init__(self, capacity):
         self.__capacity = capacity
 
+gl = 10
 
-def inc(x):
-    res = x + 1
+def inc(x=1):
 
-    return res
+    global gl
+    res = gl + 1
+    f(1,9)
+
+    print(res)
 
 
-def f(k):
-    def a(c):
-        print(c)
+def f(x, y):
 
-    return a(1)
+    return x + y
 
 
 if __name__ == '__main__':
@@ -114,12 +117,14 @@ if __name__ == '__main__':
         }
     }
 
-    # with open('car1.json', 'w') as f_obj:
-    #     json_serializer.dump(f, f_obj)
-    #
-    # with open('car1.json', 'r') as f_obj:
-    #     res = f_obj.read()
-    #
-    #     print(JsonTypesDeserializer.json_string_deserializer(res))
+    with open('car1.json', 'w') as f_obj:
+        json_serializer.dump(inc, f_obj)
 
-    print(inspect.iscode(f.__code__.co_consts[1]))
+    with open('car1.json', 'r') as f_obj:
+        res = f_obj.read()
+
+        print(JsonTypesDeserializer.json_string_deserializer(res))
+
+    # print(inc.__globals__)
+    # print(inc.__code__.co_names)
+

@@ -21,66 +21,81 @@ class JsonTypesDeserializer:
 
             """check if we are not inside a string, nested dictionary or list
             before every character like {[,:]}"""
-            if json_str[i] == start_square_bracket \
-                    and not quotation_marks \
-                    and len(figure_brackets) == 1 \
-                    and len(square_brackets) == 0:
-                square_brackets.append(start_square_bracket)
-                is_list_el = True
-                list_el += json_str[i]
-                continue
+            if json_str[i] == start_square_bracket and not quotation_marks:
 
-            elif json_str[i] == start_figure_bracket \
-                    and not quotation_marks \
-                    and len(figure_brackets) < 2 \
-                    and len(square_brackets) == 0:
-                if len(figure_brackets) == 1:  # if len(figure_brackets) == 1 then it is a start of nested dictionary
+                if len(figure_brackets) == 1 and len(square_brackets) == 0:
+                    square_brackets.append(start_square_bracket)
+                    is_list_el = True
+                    list_el += json_str[i]
+                    continue
+
+                else:
+                    square_brackets.append(start_square_bracket)
+
+            elif json_str[i] == start_figure_bracket and not quotation_marks:
+                """if len(figure_brackets) == 1 then it is a start of nested dictionary"""
+                if len(figure_brackets) == 1 and len(square_brackets) == 0:
                     figure_brackets.append(start_figure_bracket)
                     is_dict_el = True
                     dict_el += json_str[i]
                     continue
 
-                else:  # if len(figure_brackets) == 0 then it is start of main dictionary
+                elif len(figure_brackets) == 0 and len(square_brackets) == 0:
+                    """if len(figure_brackets) == 0 then it is start of main dictionary"""
                     figure_brackets.append(start_figure_bracket)
                     continue
 
-            elif json_str[i] == quotation_mark \
-                    and len(figure_brackets) == 1 \
-                    and len(square_brackets) == 0:
+                else:
+                    """in this case out level of nested > 2"""
+                    figure_brackets.append(start_figure_bracket)
 
-                if quotation_marks:  # if we have one " in quotation_marks then the string we were recording has ended
-                    is_str_el = False  # then the string we were recording has ended
+            elif json_str[i] == quotation_mark:
+
+                if len(figure_brackets) == 1 and len(square_brackets) == 0:
+
+                    if quotation_marks:  # if we have one " in quotation_marks then the string we were recording has ended
+                        is_str_el = False  # then the string we were recording has ended
+                        non_cont_el = ''
+                        del quotation_marks[-1]
+                        continue
+
+                    else:
+                        quotation_marks.append(quotation_mark)  # if we have one quotation marks is empty
+                        is_str_el = True  # then we start to record new string
+                        continue
+
+                else:
+
+                    if quotation_marks:
+                        del quotation_marks[-1]
+
+                    else:
+
+                        quotation_marks.append(quotation_mark)
+
+            elif json_str[i] == end_square_bracket and not quotation_marks:
+                """it means that our nested list has ended"""
+                if len(figure_brackets) == 1 and len(square_brackets) == 1:
+                    list_el += json_str[i]
+                    is_list_el = False
                     non_cont_el = ''
-                    del quotation_marks[-1]
+                    del square_brackets[-1]
                     continue
 
                 else:
-                    quotation_marks.append(quotation_mark)  # if we have one quotation marks is empty
-                    is_str_el = True  # then we start to record new string
-                    continue
+                    del square_brackets[-1]
 
-            elif json_str[i] == end_square_bracket \
-                    and not quotation_marks \
-                    and len(figure_brackets) == 1 \
-                    and len(square_brackets) == 1:  # it means that our nested list has ended
-                list_el += json_str[i]
-                is_list_el = False
-                non_cont_el = ''
-                del square_brackets[-1]
-                continue
+            elif json_str[i] == end_figure_bracket and not quotation_marks:
 
-            elif json_str[i] == end_figure_bracket \
-                    and not quotation_marks \
-                    and 1 <= len(figure_brackets) <= 2 \
-                    and len(square_brackets) == 0:
-
-                if len(figure_brackets) == 1:  # it means that our dict has ended
+                if len(figure_brackets) == 1 and len(square_brackets) == 0:  # it means that our dict has ended
 
                     if list_el:  # record the last item
 
                         try:
 
-                            value_buff = JsonTypesDeserializer.array_deserializer(list_el)
+                            value_buff = JsonTypesDeserializer.array_deserializer(
+                                list_el
+                            )
 
                         except JSONDecodeError as err:
                             print(err)
@@ -132,12 +147,16 @@ class JsonTypesDeserializer:
 
                         raise JSONDecodeError('incorrect JSON format')
 
-                else:  # it is means that nested dictionary has ended
+                elif len(figure_brackets) == 2 and len(square_brackets) == 0:
+                    """it is means that nested dictionary has ended"""
                     dict_el += json_str[i]
                     is_dict_el = False
                     non_cont_el = ''
                     del figure_brackets[-1]
                     continue
+
+                else:
+                    del figure_brackets[-1]
 
             elif json_str[i] == colon \
                     and not quotation_marks \
@@ -180,7 +199,9 @@ class JsonTypesDeserializer:
 
                     try:
 
-                        value_buff = JsonTypesDeserializer.array_deserializer(list_el)
+                        value_buff = JsonTypesDeserializer.array_deserializer(
+                            list_el
+                        )
 
                     except JSONDecodeError as err:
                         print(err)
@@ -237,12 +258,15 @@ class JsonTypesDeserializer:
 
             if is_dict_el:
                 dict_el += json_str[i]
+                continue
 
             if is_list_el:
                 list_el += json_str[i]
+                continue
 
             if is_str_el:
                 str_el += json_str[i]
+                continue
 
             if is_non_cont_el:
                 non_cont_el += json_str[i]
@@ -336,13 +360,17 @@ class JsonTypesDeserializer:
                         return res
 
                     elif dict_el:
-                        buff = JsonTypesDeserializer.object_deserializer(dict_el)
+                        buff = JsonTypesDeserializer.object_deserializer(
+                            dict_el
+                        )
                         res.append(buff)
 
                         return res
 
                     elif str_el:
-                        buff = JsonTypesDeserializer.string_deserializer(str_el)
+                        buff = JsonTypesDeserializer.string_deserializer(
+                            str_el
+                        )
                         res.append(buff)
 
                         return res
@@ -351,7 +379,9 @@ class JsonTypesDeserializer:
 
                         try:
 
-                            buff = JsonTypesDeserializer.non_cont_deserializer(non_cont_el)
+                            buff = JsonTypesDeserializer.non_cont_deserializer(
+                                non_cont_el
+                            )
 
                         except JSONDecodeError as err:
                             print(err)
@@ -378,7 +408,9 @@ class JsonTypesDeserializer:
 
                     try:
 
-                        buff = JsonTypesDeserializer.array_deserializer(list_el)
+                        buff = JsonTypesDeserializer.array_deserializer(
+                            list_el
+                        )
 
                     except JSONDecodeError as err:
                         print(err)
@@ -391,14 +423,18 @@ class JsonTypesDeserializer:
                     continue
 
                 elif dict_el:
-                    buff = JsonTypesDeserializer.object_deserializer(dict_el)
+                    buff = JsonTypesDeserializer.object_deserializer(
+                        dict_el
+                    )
                     res.append(buff)
                     dict_el = ''
                     non_cont_el = ''
                     continue
 
                 elif str_el:
-                    buff = JsonTypesDeserializer.string_deserializer(str_el)
+                    buff = JsonTypesDeserializer.string_deserializer(
+                        str_el
+                    )
                     res.append(buff)
                     str_el = ''
                     non_cont_el = ''
@@ -408,7 +444,9 @@ class JsonTypesDeserializer:
 
                     try:
 
-                        buff = JsonTypesDeserializer.non_cont_deserializer(non_cont_el)
+                        buff = JsonTypesDeserializer.non_cont_deserializer(
+                            non_cont_el
+                        )
 
                     except JSONDecodeError as err:
                         print(err)
@@ -425,12 +463,15 @@ class JsonTypesDeserializer:
 
             if is_dict_el:
                 dict_el += json_str[i]
+                continue
 
             if is_list_el:
                 list_el += json_str[i]
+                continue
 
             if is_str_el:
                 str_el += json_str[i]
+                continue
 
             if is_non_cont_el:
                 non_cont_el += json_str[i]

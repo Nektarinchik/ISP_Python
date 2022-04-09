@@ -1,6 +1,7 @@
 import json
 import types
 import dis
+import inspect
 
 from factory import SerializerFactory
 from types_deserializers import JsonTypesDeserializer
@@ -30,14 +31,17 @@ class Engine:
         self.__capacity = capacity
 
 
-def inc(x: int):
+def inc(x):
     res = x + 1
 
     return res
 
 
-def f():
-    print('Hello')
+def f(k):
+    def a(c):
+        print(c)
+
+    return a(1)
 
 
 if __name__ == '__main__':
@@ -95,7 +99,11 @@ if __name__ == '__main__':
 
     dict1 = {
         'dict1':{
-            'str]1': [],
+            'st[r1': {
+                'ke1': {
+                    'one':  1
+                }
+            },
             'str2': 'str',
             'str3': 3,
             'str4': 4.2,
@@ -106,12 +114,12 @@ if __name__ == '__main__':
         }
     }
 
-    with open('car1.json', 'w') as f_obj:
-        json_serializer.dump(list2, f_obj)
+    # with open('car1.json', 'w') as f_obj:
+    #     json_serializer.dump(f, f_obj)
+    #
+    # with open('car1.json', 'r') as f_obj:
+    #     res = f_obj.read()
+    #
+    #     print(JsonTypesDeserializer.json_string_deserializer(res))
 
-    with open('car1.json', 'r') as f_obj:
-        res = f_obj.read()
-
-        d1 = JsonTypesDeserializer.json_string_deserializer(res)
-        print(d1)
-
+    print(inspect.iscode(f.__code__.co_consts[1]))

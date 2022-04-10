@@ -1,3 +1,5 @@
+import builtins
+import inspect
 import types
 
 from exceptions import JSONDecodeError
@@ -589,17 +591,17 @@ class JsonTypesDeserializer:
             type = obj['type']
             
             if type == 'FunctionType':
-                # res = JsonTypesDeserializer.get_function_from_dict(obj)
+                res = JsonTypesDeserializer.get_function_from_dict(obj)
                 
                 return res
                 
             elif type == 'ClassType':
-                # res = JsonTypesDeserializer.get_class_from_dict(obj)
+                res = JsonTypesDeserializer.get_class_from_dict(obj)
 
                 return res
 
             elif type == 'BuiltinFunctionType':
-                # res = JsonTypesDeserializer.get_builtin_function_from_dict(obj)
+                res = JsonTypesDeserializer.get_builtin_function_from_dict(obj)
 
                 return res
 
@@ -609,7 +611,7 @@ class JsonTypesDeserializer:
                 return res
 
             elif type == 'CodeType':
-                # res = JsonTypesDeserializer.get_code_object_from_dict(obj)
+                res = JsonTypesDeserializer.get_code_object_from_dict(obj)
 
                 return res
 
@@ -623,15 +625,154 @@ class JsonTypesDeserializer:
         
     @staticmethod
     def get_function_from_dict(obj: dict) -> types.FunctionType:
-        pass
+
+        def func():
+            pass
+
+        func_globs = {}
+        serialized_globs = obj['__globals__']
+        for key, value in serialized_globs.items():
+
+            if isinstance(value, dict):
+                temp = JsonTypesDeserializer.get_python_type_from_object(value)
+
+                func_globs[key] = temp
+
+            elif isinstance(value, list):
+                func_globs[key] = value
+
+            elif isinstance(value, str):
+
+                """this means that you need to connect the module"""
+                if value == 'module':
+                    __import__(key)
+                    continue
+
+                func_globs[key] = value
+
+            elif isinstance(value, int):
+                func_globs[key] = value
+
+            elif isinstance(value, float):
+                func_globs[key] = value
+
+            elif isinstance(value, bool):
+                func_globs[key] = value
+
+            elif isinstance(value, types.NoneType):
+                func_globs[key] = value
+
+            elif isinstance(value, types.FunctionType):
+                func_globs[key] = value
+
+            elif isinstance(value, types.BuiltinFunctionType):
+                func_globs[key] = value
+
+            elif inspect.isclass(value):
+                func_globs[key] = value
+
+            elif inspect.isclass(type(value)):
+                func_globs[key] = value
+
+        co_name = obj['co_name']
+        co_filename = func.__code__.co_filename
+        co_nlocals = obj['co_nlocals']
+        co_argcount = obj['co_argcount']
+        co_varnames = tuple(obj['co_varnames'])
+        co_names = tuple(obj['co_names'])
+        co_cellvars = tuple(obj['co_cellvars'])
+        co_freevars = tuple(obj['co_freevars'])
+        co_posonlyargcount = obj['co_posonlyargcount']
+        co_kwonlyargcount = obj['co_kwonlyargcount']
+        co_firstlineno = obj['co_firstlineno']
+        co_lnotab = bytes(obj['co_lnotab'])
+        co_stacksize = obj['co_stacksize']
+        co_code = bytes(obj['co_code'])
+        co_consts = tuple(obj['co_consts'])
+        co_flags = obj['co_flags']
+
+        func_code = types.CodeType(
+            co_argcount,
+            co_posonlyargcount,
+            co_kwonlyargcount,
+            co_nlocals,
+            co_stacksize,
+            co_flags,
+            co_code,
+            co_consts,
+            co_names,
+            co_varnames,
+            co_filename,
+            co_name,
+            co_firstlineno,
+            co_lnotab,
+            co_freevars,
+            co_cellvars,
+        )
+        func = types.FunctionType(func_code, func_globs, co_name)
+
+        return func
     
     @staticmethod
     def get_builtin_function_from_dict(obj: dict) -> types.BuiltinFunctionType:
-        pass
+        name = obj['name']
+        builtin_function_pair = dict(filter(lambda it: it[0] == name, vars(builtins).items()))
+        builtin_function = builtin_function_pair[name]
+
+        return builtin_function
     
     @staticmethod
     def get_class_from_dict(obj: dict) -> type:
-        pass
+
+        if obj['name'] == 'object':
+
+            return object
+
+        deserialized_bases = obj['bases']
+
+        namespace_deserialized = {}
+        namespace_serialized = obj['type_definition']
+        for name, attr in namespace_serialized.items():
+
+            if isinstance(attr, list):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, dict):
+                temp = JsonTypesDeserializer.get_python_type_from_object(attr)
+
+                namespace_deserialized[name] = temp
+
+            elif isinstance(attr, str):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, int):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, float):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, bool):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, types.NoneType):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, types.FunctionType):
+                namespace_deserialized[name] = attr
+
+            elif isinstance(attr, types.BuiltinFunctionType):
+                namespace_deserialized[name] = attr
+
+            elif inspect.isclass(attr):
+                namespace_deserialized[name] = attr
+
+            elif inspect.isclass(type(attr)):
+                namespace_deserialized[name] = attr
+
+        name = obj['name']
+        new_cl = type(name, tuple(deserialized_bases), namespace_deserialized)
+
+        return new_cl
     
     @staticmethod
     def get_class_instance_form_dict(obj: dict) -> object:
@@ -639,5 +780,44 @@ class JsonTypesDeserializer:
     
     @staticmethod
     def get_code_object_from_dict(obj: dict) -> types.CodeType:
-        pass
-        
+
+        def func():
+            pass
+
+        co_name = obj['co_name']
+        co_filename = func.__code__.co_filename
+        co_nlocals = obj['co_nlocals']
+        co_argcount = obj['co_argcount']
+        co_varnames = tuple(obj['co_varnames'])
+        co_names = tuple(obj['co_names'])
+        co_cellvars = tuple(obj['co_cellvars'])
+        co_freevars = tuple(obj['co_freevars'])
+        co_posonlyargcount = obj['co_posonlyargcount']
+        co_kwonlyargcount = obj['co_kwonlyargcount']
+        co_firstlineno = obj['co_firstlineno']
+        co_lnotab = bytes(obj['co_lnotab'])
+        co_stacksize = obj['co_stacksize']
+        co_code = bytes(obj['co_code'])
+        co_consts = tuple(obj['co_consts'])
+        co_flags = obj['co_flags']
+
+        code_obj = types.CodeType(
+            co_argcount,
+            co_posonlyargcount,
+            co_kwonlyargcount,
+            co_nlocals,
+            co_stacksize,
+            co_flags,
+            co_code,
+            co_consts,
+            co_names,
+            co_varnames,
+            co_filename,
+            co_name,
+            co_firstlineno,
+            co_lnotab,
+            co_freevars,
+            co_cellvars,
+        )
+
+        return code_obj

@@ -18,6 +18,7 @@ class Car(Vehicle):
     def __init__(self, name, engine):
         self.__name = name
         self.__engine = engine
+        self.__model = 'W210'
 
     def ride(self):
         print(f'{self.__name} is riding now')
@@ -42,15 +43,30 @@ def inc(x=1):
     print(res)
 
 
-def f(x, y):
+def f():
 
-    return x + y
+    def a(x):
+        print(x)
+
+    return a(1)
+
+def fib(n):
+
+    if n ==1:
+        return 1
+
+    if n==0:
+        return 1
+
+    return fib(n-1)+fib(n-2)
 
 
 if __name__ == '__main__':
     json_serializer = SerializerFactory.create_serializer(SerializerTypes.json)
     engine1 = Engine(2)
     car1 = Car('bmw', engine1)
+    Car.f = f
+    # print(isinstance(car1.f, types.MethodType))
     # dict1 = {
     #     'float': 1.4568,
     #     1.4568: 'float',
@@ -117,14 +133,16 @@ if __name__ == '__main__':
         }
     }
 
-    with open('car1.json', 'w') as f_obj:
-        json_serializer.dump(inc, f_obj)
-
-    with open('car1.json', 'r') as f_obj:
-        res = f_obj.read()
-
-        print(JsonTypesDeserializer.json_string_deserializer(res))
-
-    # print(inc.__globals__)
-    # print(inc.__code__.co_names)
-
+    # with open('test.json', 'w') as f_obj:
+    #     json_serializer.dump(car1, f_obj)
+    print(car1.__dict__)
+    car1.__setattr__('_Car__name', 'AUDI')
+    print(Car.__dict__['__init__'].__code__.)
+    # with open('test.json', 'r') as f_obj:
+    #     res = f_obj.read()
+    #
+    #     res = json_serializer.loads(res)
+    # f()
+    #     res(10)
+    # print((inc.__globals__['__builtins__'].__name__))
+    # __import__('__builtins__')

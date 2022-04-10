@@ -84,7 +84,8 @@ class JsonTypesSerializer:
         """is a string encoding the mapping from bytecode offsets to line numbers"""
         res_str += spaces
         co_lnotab = func.__code__.co_lnotab
-        res_str += f'"co_lnotab": "{co_lnotab}",\n'
+        buff = JsonTypesSerializer.list_serializer(list(co_lnotab), indent=indent+indent)
+        res_str += f'"co_lnotab": {buff},\n'
 
         """is the required stack size"""
         res_str += spaces
@@ -95,7 +96,8 @@ class JsonTypesSerializer:
         """is a string representing the sequence of bytecode instructions"""
         res_str += spaces
         co_code = func.__code__.co_code
-        res_str += f'"co_code": "{co_code}",\n'
+        buff = JsonTypesSerializer.list_serializer(list(co_code), indent=indent+indent)
+        res_str += f'"co_code": {buff},\n'
 
         """it gives the name of the function"""
         res_str += spaces
@@ -210,7 +212,8 @@ class JsonTypesSerializer:
         """is a string encoding the mapping from bytecode offsets to line numbers"""
         res_str += spaces
         co_lnotab = code_obj.co_lnotab
-        res_str += f'"co_lnotab": "{co_lnotab}",\n'
+        buff = JsonTypesSerializer.list_serializer(list(co_lnotab), indent=indent+indent)
+        res_str += f'"co_lnotab": {buff},\n'
 
         """is the required stack size"""
         res_str += spaces
@@ -221,7 +224,8 @@ class JsonTypesSerializer:
         """is a string representing the sequence of bytecode instructions"""
         res_str += spaces
         co_code = code_obj.co_code
-        res_str += f'"co_code": "{co_code}",\n'
+        buff = JsonTypesSerializer.list_serializer(list(co_code), indent=indent+indent)
+        res_str += f'"co_code": {buff},\n'
 
         """is a tuple containing the literals used by the bytecode"""
         res_str += spaces
@@ -287,7 +291,7 @@ class JsonTypesSerializer:
         globals = func.__globals__
         local_names = func.__code__.co_names
         """if globals is empty write down the {}"""
-        if globals: # names
+        if globals:
             res_str += '{\n'
 
         else:
@@ -406,6 +410,25 @@ class JsonTypesSerializer:
                 else:
                     res_str += spaces
                     res_str += f'"{name}": {value_buff},\n'
+
+        """we need this conditional operator to close the dict"""
+        if len(res_str) > 2:
+
+            if res_str[-2] != ',':
+                res_str = res_str[:-1]
+                res_str += ',\n'
+
+        """save the names of the modules connected in this module so that we can load them later"""
+        value = 'module'
+        for key in globals.keys():
+
+            if isinstance(globals[key], types.ModuleType):
+                name = globals[key].__name__
+                res_str += spaces
+                res_str += f'"{name}": "{value}",\n'
+
+            else:
+                continue
 
         """we need this conditional operator to close the dict"""
         if res_str[-2] == ',':
@@ -546,7 +569,9 @@ class JsonTypesSerializer:
             res_str += '['
             old_spaces = ''
 
+        counter = 0
         for item in obj:
+            counter += 1
 
             try:
 
@@ -646,7 +671,7 @@ class JsonTypesSerializer:
 
             finally:
 
-                if item is not obj[-1]:
+                if counter != len(obj):
                     res_str += spaces
                     res_str += f'{buff},\n'
 

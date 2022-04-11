@@ -37,7 +37,8 @@
                 ],
                 "co_names": [
                                 "_Car__name",
-                                "_Car__engine"
+                                "_Car__engine",
+                                "_Car__model"
                 ],
                 "co_cellvars": [],
                 "co_freevars": [],
@@ -46,6 +47,8 @@
                 "co_firstlineno": 18,
                 "co_lnotab": [
                                 0,
+                                1,
+                                6,
                                 1,
                                 6,
                                 1
@@ -65,13 +68,20 @@
                                 95,
                                 1,
                                 100,
+                                1,
+                                124,
+                                0,
+                                95,
+                                2,
+                                100,
                                 0,
                                 83,
                                 0
                 ],
                 "co_name": "__init__",
                 "co_consts": [
-                                null
+                                null,
+                                "W210"
                 ],
                 "co_flags": 67
         },
@@ -98,7 +108,7 @@
                 "co_freevars": [],
                 "co_posonlyargcount": 0,
                 "co_kwonlyargcount": 0,
-                "co_firstlineno": 22,
+                "co_firstlineno": 23,
                 "co_lnotab": [
                                 0,
                                 1
@@ -133,6 +143,98 @@
                 ],
                 "co_flags": 67
         },
+        "get_info": {
+                "type": "FunctionType",
+                "__globals__": {
+                                "builtins": "module",
+                                "json": "module",
+                                "types": "module",
+                                "dis": "module",
+                                "inspect": "module",
+                                "math": "module"
+                },
+                "co_nlocals": 1,
+                "co_argcount": 1,
+                "co_varnames": [
+                                "self"
+                ],
+                "co_names": [
+                                "print",
+                                "_Car__name",
+                                "_Car__engine",
+                                "get_info",
+                                "_Car__model"
+                ],
+                "co_cellvars": [],
+                "co_freevars": [],
+                "co_posonlyargcount": 0,
+                "co_kwonlyargcount": 0,
+                "co_firstlineno": 26,
+                "co_lnotab": [
+                                0,
+                                1,
+                                16,
+                                1,
+                                10,
+                                1
+                ],
+                "co_stacksize": 3,
+                "co_code": [
+                                116,
+                                0,
+                                100,
+                                1,
+                                124,
+                                0,
+                                106,
+                                1,
+                                155,
+                                0,
+                                157,
+                                2,
+                                131,
+                                1,
+                                1,
+                                0,
+                                124,
+                                0,
+                                106,
+                                2,
+                                160,
+                                3,
+                                161,
+                                0,
+                                1,
+                                0,
+                                116,
+                                0,
+                                100,
+                                2,
+                                124,
+                                0,
+                                106,
+                                4,
+                                155,
+                                0,
+                                157,
+                                2,
+                                131,
+                                1,
+                                1,
+                                0,
+                                100,
+                                0,
+                                83,
+                                0
+                ],
+                "co_name": "get_info",
+                "co_consts": [
+                                null,
+                                "name: ",
+                                "model: "
+                ],
+                "co_flags": 67
+        },
         "_Car__hidden": {
                 "type": "FunctionType",
                 "__globals__": {
@@ -156,7 +258,7 @@
                 "co_freevars": [],
                 "co_posonlyargcount": 0,
                 "co_kwonlyargcount": 0,
-                "co_firstlineno": 25,
+                "co_firstlineno": 31,
                 "co_lnotab": [
                                 0,
                                 1
@@ -202,7 +304,7 @@
                 "co_freevars": [],
                 "co_posonlyargcount": 0,
                 "co_kwonlyargcount": 0,
-                "co_firstlineno": 45,
+                "co_firstlineno": 54,
                 "co_lnotab": [
                                 0,
                                 2,
@@ -225,6 +327,10 @@
                                 3,
                                 131,
                                 1,
+                                1,
+                                0,
+                                100,
+                                0,
                                 83,
                                 0
                 ],
@@ -246,7 +352,7 @@
                                                                 "co_freevars": [],
                                                                 "co_posonlyargcount": 0,
                                                                 "co_kwonlyargcount": 0,
-                                                                "co_firstlineno": 47,
+                                                                "co_firstlineno": 56,
                                                                 "co_lnotab": [
                                                                                                                                 0,
                                                                                                                                 1
@@ -316,7 +422,7 @@
                                                                 "co_freevars": [],
                                                                 "co_posonlyargcount": 0,
                                                                 "co_kwonlyargcount": 0,
-                                                                "co_firstlineno": 31,
+                                                                "co_firstlineno": 37,
                                                                 "co_lnotab": [
                                                                                                                                 0,
                                                                                                                                 1
@@ -339,12 +445,71 @@
                                                                                                                                 null
                                                                 ],
                                                                 "co_flags": 67
+                                },
+                                "get_info": {
+                                                                "type": "FunctionType",
+                                                                "__globals__": {
+                                                                                                                                "builtins": "module",
+                                                                                                                                "json": "module",
+                                                                                                                                "types": "module",
+                                                                                                                                "dis": "module",
+                                                                                                                                "inspect": "module",
+                                                                                                                                "math": "module"
+                                                                },
+                                                                "co_nlocals": 1,
+                                                                "co_argcount": 1,
+                                                                "co_varnames": [
+                                                                                                                                "self"
+                                                                ],
+                                                                "co_names": [
+                                                                                                                                "print",
+                                                                                                                                "_Engine__capacity"
+                                                                ],
+                                                                "co_cellvars": [],
+                                                                "co_freevars": [],
+                                                                "co_posonlyargcount": 0,
+                                                                "co_kwonlyargcount": 0,
+                                                                "co_firstlineno": 40,
+                                                                "co_lnotab": [
+                                                                                                                                0,
+                                                                                                                                1
+                                                                ],
+                                                                "co_stacksize": 3,
+                                                                "co_code": [
+                                                                                                                                116,
+                                                                                                                                0,
+                                                                                                                                100,
+                                                                                                                                1,
+                                                                                                                                124,
+                                                                                                                                0,
+                                                                                                                                106,
+                                                                                                                                1,
+                                                                                                                                155,
+                                                                                                                                0,
+                                                                                                                                157,
+                                                                                                                                2,
+                                                                                                                                131,
+                                                                                                                                1,
+                                                                                                                                1,
+                                                                                                                                0,
+                                                                                                                                100,
+                                                                                                                                0,
+                                                                                                                                83,
+                                                                                                                                0
+                                                                ],
+                                                                "co_name": "get_info",
+                                                                "co_consts": [
+                                                                                                                                null,
+                                                                                                                                "capacity: "
+                                                                ],
+                                                                "co_flags": 67
                                 }
                 }
         },
         "object_definition": {
                 "_Engine__capacity": 2
         }
-    }
+    },
+    "_Car__model": "W210"
   }
 }

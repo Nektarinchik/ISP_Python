@@ -23,6 +23,11 @@ class Car(Vehicle):
     def ride(self):
         print(f'{self.__name} is riding now')
 
+    def get_info(self):
+        print(f'name: {self.__name}')
+        self.__engine.get_info()
+        print(f'model: {self.__model}')
+
     def __hidden(self, name):
         print(name)
 
@@ -31,6 +36,9 @@ class Engine:
 
     def __init__(self, capacity):
         self.__capacity = capacity
+
+    def get_info(self):
+        print(f'capacity: {self.__capacity}')
 
 gl = 10
 
@@ -48,7 +56,7 @@ def f():
     def a(x):
         print(x)
 
-    return a(1)
+    a(1)
 
 def fib(n):
 
@@ -59,6 +67,11 @@ def fib(n):
         return 1
 
     return fib(n-1)+fib(n-2)
+
+def test_func_with_kwargs(a,b,c,**kwargs):
+    print(a,b,c)
+    res = kwargs['indent']
+    print(res)
 
 
 if __name__ == '__main__':
@@ -133,16 +146,17 @@ if __name__ == '__main__':
         }
     }
 
-    # with open('test.json', 'w') as f_obj:
-    #     json_serializer.dump(car1, f_obj)
-    print(car1.__dict__)
-    car1.__setattr__('_Car__name', 'AUDI')
-    print(Car.__dict__['__init__'].__code__.)
-    # with open('test.json', 'r') as f_obj:
-    #     res = f_obj.read()
-    #
-    #     res = json_serializer.loads(res)
-    # f()
-    #     res(10)
-    # print((inc.__globals__['__builtins__'].__name__))
-    # __import__('__builtins__')
+    with open('test.json', 'w') as f_obj:
+        json_serializer.dump(car1, f_obj)
+
+    with open('test.json', 'r') as f_obj:
+        res = f_obj.read()
+
+        res = json_serializer.loads(res)
+        print(type(res))
+
+    # args = (None,None, None)
+    # test_func_with_kwargs(*args)
+    # print(Engine.__dict__['__init__'].__code__.co_kwonlyargcount)
+    args = [1,2,23,3]
+    print(*args)

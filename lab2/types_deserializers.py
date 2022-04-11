@@ -606,7 +606,7 @@ class JsonTypesDeserializer:
                 return res
 
             elif type == 'ClassInstanceType':
-                # res = JsonTypesDeserializer.get_class_instance_form_dict(obj)
+                res = JsonTypesDeserializer.get_class_instance_form_dict(obj)
 
                 return res
 
@@ -776,8 +776,21 @@ class JsonTypesDeserializer:
     
     @staticmethod
     def get_class_instance_form_dict(obj: dict) -> object:
-        pass
-    
+        object_class = obj['class_definition']
+        attrs = obj['object_definition']
+        init_args_count = object_class.__init__.__code__.co_argcount
+
+        args = []
+        for i in range(init_args_count - 1):
+            args.append(None)
+
+        class_instance = object_class(*args)
+
+        for name, value in attrs.items():
+            class_instance.__setattr__(name, value)
+
+        return class_instance
+
     @staticmethod
     def get_code_object_from_dict(obj: dict) -> types.CodeType:
 

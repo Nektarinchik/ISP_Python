@@ -300,7 +300,7 @@ class JsonTypesSerializer:
             old_spaces = ''
 
         """if we have a recursion function we write it once"""
-        if func.__name__ in local_names:
+        if func.__name__ in local_names and '_' not in func.__name__:
             local_names.remove(func.__name__)
             res_str += spaces
             res_str += f'"{func.__name__}": "recursive",\n'
@@ -390,8 +390,11 @@ class JsonTypesSerializer:
                 elif inspect.iscode(obj):
                     value_buff = JsonTypesSerializer.code_object_serializer(
                         obj,
-                        indent=indent
+                        indent=indent+indent
                     )
+
+                elif isinstance(obj, types.ModuleType):
+                    continue
 
                 elif inspect.isclass(type(obj)):
                     value_buff = JsonTypesSerializer.class_instance_serializer(
@@ -408,15 +411,15 @@ class JsonTypesSerializer:
 
                 raise SystemExit(1)
 
-            finally:
 
-                if counter == len(local_names):
-                    res_str += spaces
-                    res_str += f'"{name}": {value_buff}\n'
 
-                else:
-                    res_str += spaces
-                    res_str += f'"{name}": {value_buff},\n'
+            if counter == len(local_names):
+                res_str += spaces
+                res_str += f'"{name}": {value_buff}\n'
+
+            else:
+                res_str += spaces
+                res_str += f'"{name}": {value_buff},\n'
 
         """we need this conditional operator to close the dict"""
         if len(res_str) > 2:
@@ -718,7 +721,8 @@ class JsonTypesSerializer:
                 '__module__',
                 '__dict__',
                 '__weakref__',
-                '__doc__'
+                '__doc__',
+                '__hash__'
             ]
             if key not in extra_keys:
 

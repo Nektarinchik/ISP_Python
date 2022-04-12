@@ -133,7 +133,10 @@ class JsonSerializer(Serializer):
             return res
 
     def load(self, f_obj: _io.TextIOWrapper):
-        pass
+        buff = f_obj.read()
+        res = self.loads(buff)
+
+        return res
 
     def loads(self, s: str):
 

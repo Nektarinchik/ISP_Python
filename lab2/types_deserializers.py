@@ -649,7 +649,7 @@ class JsonTypesDeserializer:
 
                 """this means that you need to connect the module"""
                 if value == 'module':
-                    __import__(key)
+                    func_globs[key] = __import__(key)
                     continue
 
                 func_globs[key] = value
@@ -713,7 +713,10 @@ class JsonTypesDeserializer:
             co_freevars,
             co_cellvars,
         )
-        func = types.FunctionType(func_code, func_globs, co_name)
+        func = types.FunctionType(func_code,
+                                  func_globs,
+                                  co_name
+                                  )
 
         if is_recursive:  # if our function is recursive then we will store it in the globals
             func.__globals__[func.__name__] = func

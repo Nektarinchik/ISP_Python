@@ -2,11 +2,6 @@
   "type": "FunctionType",
   "__globals__": {
     "fib": "recursive",
-    "builtins": "module",
-    "json": "module",
-    "types": "module",
-    "dis": "module",
-    "inspect": "module",
     "math": "module"
   },
   "co_nlocals": 1,
@@ -21,16 +16,16 @@
   "co_freevars": [],
   "co_posonlyargcount": 0,
   "co_kwonlyargcount": 0,
-  "co_firstlineno": 70,
+  "co_firstlineno": 71,
   "co_lnotab": [
     0,
-    2,
+    1,
     8,
-    2,
+    1,
     4,
     2,
     8,
-    2,
+    1,
     4,
     2
   ],

@@ -6,7 +6,7 @@ import types
 class JsonTypesSerializer:
 
     @staticmethod
-    def user_def_function_serializer(func: types.FunctionType, indent: int, is_write=True) -> str:
+    def user_def_function_serializer(func: types.FunctionType, indent: int) -> str:
         old_spaces = ''
 
         if int(indent / 2) != 1:
@@ -23,7 +23,7 @@ class JsonTypesSerializer:
         res_str += '"type": "FunctionType",\n'
 
         res_str += spaces
-        globals = JsonTypesSerializer.globals_serializer(func, indent=indent+indent, is_write=is_write)
+        globals = JsonTypesSerializer.globals_serializer(func, indent=indent+indent)
         res_str += f'"__globals__": {globals},\n'
 
         """is the number of local variables used by the function"""
@@ -280,7 +280,7 @@ class JsonTypesSerializer:
         return res_str
 
     @staticmethod
-    def globals_serializer(func: types.FunctionType, indent: int, is_write=True) -> str:
+    def globals_serializer(func: types.FunctionType, indent: int) -> str:
         old_spaces = ''
 
         if int(indent / 2) != 1:
@@ -299,19 +299,11 @@ class JsonTypesSerializer:
             res_str += '{'
             old_spaces = ''
 
-        # """if we have a recursion function we write it once"""
-        # if func.__name__ in local_names:
-        #     local_names.remove(func.__name__)
-        #
-        #     if is_write:
-        #         value_buff = JsonTypesSerializer.user_def_function_serializer(
-        #             func,
-        #             indent=indent + indent,
-        #             is_write=False
-        #         )
-        #
-        #         res_str += spaces
-        #         res_str += f'"{func.__name__}": {value_buff},\n'
+        """if we have a recursion function we write it once"""
+        if func.__name__ in local_names:
+            local_names.remove(func.__name__)
+            res_str += spaces
+            res_str += f'"{func.__name__}": "recursive",\n'
 
         value_buff = None
         counter = 0

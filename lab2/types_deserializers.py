@@ -625,6 +625,7 @@ class JsonTypesDeserializer:
         
     @staticmethod
     def get_function_from_dict(obj: dict) -> types.FunctionType:
+        is_recursive = False
 
         def func():
             pass
@@ -633,7 +634,10 @@ class JsonTypesDeserializer:
         serialized_globs = obj['__globals__']
         for key, value in serialized_globs.items():
 
-            if isinstance(value, dict):
+            if value == 'recursive':  # it means that our function is recursive
+                is_recursive = True
+
+            elif isinstance(value, dict):
                 temp = JsonTypesDeserializer.get_python_type_from_object(value)
 
                 func_globs[key] = temp
@@ -710,6 +714,9 @@ class JsonTypesDeserializer:
             co_cellvars,
         )
         func = types.FunctionType(func_code, func_globs, co_name)
+
+        if is_recursive:  # if our function is recursive then we will store it in the globals
+            func.__globals__[func.__name__] = func
 
         return func
     

@@ -58,12 +58,23 @@ def f():
 
     a(1)
 
+
+def a():
+    c()
+
+
+def c():
+    a()
+
+
 def fib(n):
 
-    if n ==1:
+    if n == 1:
+
         return 1
 
-    if n==0:
+    if n == 0:
+
         return 1
 
     return fib(n-1)+fib(n-2)
@@ -147,16 +158,14 @@ if __name__ == '__main__':
     }
 
     with open('test.json', 'w') as f_obj:
-        json_serializer.dump(car1, f_obj)
+        json_serializer.dump(a, f_obj)
 
-    with open('test.json', 'r') as f_obj:
-        res = f_obj.read()
-
-        res = json_serializer.loads(res)
-        print(type(res))
+    # with open('test.json', 'r') as f_obj:
+    #     res = f_obj.read()
+    #
+    #     res = json_serializer.loads(res)
+    #     print(res(7))
 
     # args = (None,None, None)
     # test_func_with_kwargs(*args)
     # print(Engine.__dict__['__init__'].__code__.co_kwonlyargcount)
-    args = [1,2,23,3]
-    print(*args)

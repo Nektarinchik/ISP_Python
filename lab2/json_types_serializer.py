@@ -22,6 +22,7 @@ class JsonTypesSerializer:
         res_str += spaces
         res_str += '"type": "FunctionType",\n'
 
+        """write necessary modules for working"""
         res_str += spaces
         globals = JsonTypesSerializer.globals_serializer(func, indent=indent+indent)
         res_str += f'"__globals__": {globals},\n'
@@ -300,7 +301,7 @@ class JsonTypesSerializer:
             old_spaces = ''
 
         """if we have a recursion function we write it once"""
-        if func.__name__ in local_names and '_' not in func.__name__:
+        if func.__name__ in local_names:
             local_names.remove(func.__name__)
             res_str += spaces
             res_str += f'"{func.__name__}": "recursive",\n'
@@ -676,8 +677,8 @@ class JsonTypesSerializer:
 
             except TypeError as err:
                 print(err)
-                temp = JsonTypesSerializer.none_serializer()
-                buff = temp
+
+                raise SystemExit(1)
 
             finally:
 
@@ -860,8 +861,8 @@ class JsonTypesSerializer:
 
                 except TypeError as err:
                     print(err)
-                    temp = JsonTypesSerializer.none_serializer()
-                    value_buff = temp
+
+                    raise SystemExit(1)
 
                 finally:
 

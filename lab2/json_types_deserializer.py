@@ -585,7 +585,7 @@ class JsonTypesDeserializer:
 
     @staticmethod
     def get_python_type_from_object(obj: dict):
-        res = obj
+
         try:
             
             type = obj['type']
@@ -619,7 +619,7 @@ class JsonTypesDeserializer:
 
                 return obj
             
-        except KeyError as err:
+        except KeyError:
             
             return obj
         

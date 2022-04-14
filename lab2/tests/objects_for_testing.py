@@ -89,6 +89,6 @@ def func_with_closure(x: int):
 
 def function_with_function_from_math(x):
     sin = math.sin(x)
-    print(x)
+    print(sin)
 
-    return x
+    return sin

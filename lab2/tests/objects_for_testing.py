@@ -78,7 +78,13 @@ def fib(n: int):
     return fib(n - 1) + fib(n - 2)
 
 
+mes = 'Hello'
+
+
 def func_with_closure(x: int):
+    global mes
+    print(mes)
+
     def increase_value(interval: int):
         res = x + interval
 

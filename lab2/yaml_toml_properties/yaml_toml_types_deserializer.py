@@ -1,7 +1,7 @@
 import builtins
 import types
 
-from exceptions import YAMLDecodeError
+from exceptions.exceptions import YAMLDecodeError
 
 
 class YamlTomlTypesDeserializer:

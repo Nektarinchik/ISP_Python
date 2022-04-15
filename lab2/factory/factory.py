@@ -1,6 +1,6 @@
-import serializers
+from serializers import serializers
 
-from serializer_types import SerializerTypes
+from factory.serializer_types import SerializerTypes
 
 
 class SerializerFactory:

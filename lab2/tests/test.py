@@ -1,7 +1,7 @@
 import objects_for_testing
 
-from factory import SerializerFactory
-from serializer_types import SerializerTypes
+from factory.factory import SerializerFactory
+from factory.serializer_types import SerializerTypes
 from unittest import TestCase, main
 
 
@@ -14,6 +14,41 @@ class SerializerTest(TestCase):
         self.json_filename = 'buff.json'
         self.yaml_filename = 'buff.yaml'
         self.toml_filename = 'buff.toml'
+
+    def test_serialization_builtin_function(self):
+        """
+        Testing serialization of builtin function
+        """
+
+        """JSON test"""
+        with open(self.json_filename, 'w') as f_obj:
+            self.json_serializer.dump(abs, f_obj)
+
+        with open(self.json_filename, 'r') as f_obj:
+            res = self.json_serializer.load(f_obj)
+
+        for i in range(-5, 5):
+            self.assertEqual(res(i), abs(i))
+
+        """YAML test"""
+        with open(self.yaml_filename, 'w') as f_obj:
+            self.yaml_serializer.dump(abs, f_obj)
+
+        with open(self.yaml_filename, 'r') as f_obj:
+            res = self.yaml_serializer.load(f_obj)
+
+        for i in range(-5, 5):
+            self.assertEqual(res(i), abs(i))
+
+        """JSON test"""
+        with open(self.toml_filename, 'w') as f_obj:
+            self.toml_serializer.dump(abs, f_obj)
+
+        with open(self.toml_filename, 'rb') as f_obj:
+            res = self.toml_serializer.load(f_obj)
+
+        for i in range(-5, 5):
+            self.assertEqual(res(i), abs(i))
 
     def test_function(self):
         """
@@ -206,7 +241,6 @@ class SerializerTest(TestCase):
         for i in range(1, 20):
             self.assertEqual(res(i), objects_for_testing.func_with_closure(i))
 
-
     def test_class_instance(self):
 
         engine = objects_for_testing.Engine(3)
@@ -230,6 +264,11 @@ class SerializerTest(TestCase):
 
         self.assertEqual(res, car)
 
+        buff = self.json_serializer.dumps(car)
+        res = self.json_serializer.loads(buff)
+
+        self.assertEqual(res, car)
+
         """YAML test"""
         with open(self.yaml_filename, 'w') as f_obj:
             self.yaml_serializer.dump(car, f_obj)
@@ -239,12 +278,22 @@ class SerializerTest(TestCase):
 
         self.assertEqual(res, car)
 
+        buff = self.yaml_serializer.dumps(car)
+        res = self.yaml_serializer.loads(buff)
+
+        self.assertEqual(res, car)
+
         """TOML serializer"""
         with open(self.toml_filename, 'w') as f_obj:
             self.toml_serializer.dump(car, f_obj)
 
         with open(self.toml_filename, 'rb') as f_obj:
             res = self.toml_serializer.load(f_obj)
+
+        self.assertEqual(res, car)
+
+        buff = self.toml_serializer.dumps(car)
+        res = self.toml_serializer.loads(buff)
 
         self.assertEqual(res, car)
 
@@ -290,8 +339,28 @@ class SerializerTest(TestCase):
             },
             'end_dict': None
         }
+        test_list = [
+            'first_list',
+            [1, 2, 3, 2.24, 'str', None],
+            {
+                'str1': 1,
+                'str2': 2,
+                'None': None
+            }
+        ]
+
+        test_tuple = (
+            1,
+            'str',
+            None,
+            [],
+            {},
+            True
+        )
 
         """JSON test"""
+
+        """dict test"""
         with open(self.json_filename, 'w') as f_obj:
             self.json_serializer.dump(test_dict, f_obj)
 
@@ -300,7 +369,27 @@ class SerializerTest(TestCase):
 
         self.assertEqual(test_dict, res)
 
+        """list test"""
+        with open(self.json_filename, 'w') as f_obj:
+            self.json_serializer.dump(test_list, f_obj)
+
+        with open(self.json_filename, 'r') as f_obj:
+            res = self.json_serializer.load(f_obj)
+
+        self.assertEqual(test_list, res)
+
+        """tuple test"""
+        with open(self.json_filename, 'w') as f_obj:
+            self.json_serializer.dump(test_tuple, f_obj)
+
+        with open(self.json_filename, 'r') as f_obj:
+            res = self.json_serializer.load(f_obj)
+
+        self.assertEqual(list(test_tuple), res)
+
         """YAML test"""
+
+        """dict test"""
         with open(self.yaml_filename, 'w') as f_obj:
             self.yaml_serializer.dump(test_dict, f_obj)
 
@@ -308,6 +397,24 @@ class SerializerTest(TestCase):
             res = self.yaml_serializer.load(f_obj)
 
         self.assertEqual(test_dict, res)
+
+        """list test"""
+        with open(self.yaml_filename, 'w') as f_obj:
+            self.yaml_serializer.dump(test_list, f_obj)
+
+        with open(self.yaml_filename, 'r') as f_obj:
+            res = self.yaml_serializer.load(f_obj)
+
+        self.assertEqual(test_list, res)
+
+        """tuple test"""
+        with open(self.yaml_filename, 'w') as f_obj:
+            self.yaml_serializer.dump(test_tuple, f_obj)
+
+        with open(self.yaml_filename, 'r') as f_obj:
+            res = self.yaml_serializer.load(f_obj)
+
+        self.assertEqual(list(test_tuple), res)
 
 
 if __name__ == '__main__':

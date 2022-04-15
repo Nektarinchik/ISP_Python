@@ -8,13 +8,12 @@ import types
 import _io
 import yaml
 
-import json_types_deserializer
-import json_types_serializer
-import yaml_toml_types_deserializer
-import yaml_toml_types_serializer
+from json_properties.json_types_deserializer import JsonTypesDeserializer
+from json_properties.json_types_serializer import JsonTypesSerializer
+from yaml_toml_properties import yaml_toml_types_deserializer, yaml_toml_types_serializer
 
-from exceptions import JSONDecodeError
-from exceptions import YAMLDecodeError
+from exceptions.exceptions import JSONDecodeError
+from exceptions.exceptions import YAMLDecodeError
 
 
 class Serializer:
@@ -49,31 +48,31 @@ class JsonSerializer(Serializer):
 
             res = ''
             if isinstance(obj, types.FunctionType):
-                res = json_types_serializer.JsonTypesSerializer.user_def_function_serializer(
+                res = JsonTypesSerializer.user_def_function_serializer(
                     obj,
                     indent=indent
                 )
 
             elif isinstance(obj, types.LambdaType):
-                res = json_types_serializer.JsonTypesSerializer.lambda_function_serializer(
+                res = JsonTypesSerializer.lambda_function_serializer(
                     obj,
                     indent=indent
                 )
 
             elif isinstance(obj, types.BuiltinFunctionType):
-                res = json_types_serializer.JsonTypesSerializer.builtin_function_serializer(
+                res = JsonTypesSerializer.builtin_function_serializer(
                     obj,
                     indent=indent
                 )
 
             elif isinstance(obj, int):
-                temp = json_types_serializer.JsonTypesSerializer.int_serializer(
+                temp = JsonTypesSerializer.int_serializer(
                     obj
                 )
                 res = temp
 
             elif isinstance(obj, float):
-                temp = json_types_serializer.JsonTypesSerializer.float_serializer(
+                temp = JsonTypesSerializer.float_serializer(
                     obj
                 )
                 res = temp
@@ -82,47 +81,47 @@ class JsonSerializer(Serializer):
                 res = f'"{obj}"'
 
             elif isinstance(obj, list):
-                res = json_types_serializer.JsonTypesSerializer.list_serializer(
+                res = JsonTypesSerializer.list_serializer(
                     obj,
                     indent=indent
                 )
 
             elif isinstance(obj, dict):
-                res = json_types_serializer.JsonTypesSerializer.dict_serializer(
+                res = JsonTypesSerializer.dict_serializer(
                     obj,
                     indent=indent
                 )
 
             elif isinstance(obj, tuple):
-                res = json_types_serializer.JsonTypesSerializer.tuple_serializer(
+                res = JsonTypesSerializer.tuple_serializer(
                     obj,
                     indent=indent
                 )
 
             elif isinstance(obj, bool):
-                temp = json_types_serializer.JsonTypesSerializer.bool_serializer(
+                temp = JsonTypesSerializer.bool_serializer(
                     obj
                 )
                 res = temp
 
             elif isinstance(obj, types.NoneType):
-                temp = json_types_serializer.JsonTypesSerializer.none_serializer()
+                temp = JsonTypesSerializer.none_serializer()
                 res = temp
 
             elif inspect.isclass(obj):
-                res = json_types_serializer.JsonTypesSerializer.class_serializer(
+                res = JsonTypesSerializer.class_serializer(
                     obj,
                     indent=indent
                 )
 
             elif inspect.isclass(type(obj)):
-                res = json_types_serializer.JsonTypesSerializer.class_instance_serializer(
+                res = JsonTypesSerializer.class_instance_serializer(
                     obj,
                     indent=indent
                 )
 
             elif inspect.iscode(obj):
-                res = json_types_serializer.JsonTypesSerializer.code_object_serializer(
+                res = JsonTypesSerializer.code_object_serializer(
                     obj,
                     indent=indent
                 )
@@ -136,7 +135,7 @@ class JsonSerializer(Serializer):
         finally:
 
             if not res:
-                res = json_types_serializer.JsonTypesSerializer.none_serializer()
+                res = JsonTypesSerializer.none_serializer()
 
             return res
 
@@ -150,7 +149,7 @@ class JsonSerializer(Serializer):
 
         try:
 
-            res = json_types_deserializer.JsonTypesDeserializer.json_string_deserializer(s)
+            res = JsonTypesDeserializer.json_string_deserializer(s)
 
             return res
 

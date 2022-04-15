@@ -875,16 +875,24 @@ class JsonTypesSerializer:
                         res_str += f'{key_buff}: {value_buff},\n'
 
         """we need this conditional operator to close the dict"""
-        if res_str[-2] == ',':
-            res_str = res_str[:-2]
-            res_str += '\n'
+        if len(res_str) > 2:
+
+            if res_str[-2] == ',':
+                res_str = res_str[:-2]
+                res_str += '\n'
 
         if res_str == '{\n':
             res_str = '{}'
 
         else:
-            res_str += old_spaces
-            res_str += '}'
+
+            if res_str == '{':
+                res_str += '}'
+
+            else:
+
+                res_str += old_spaces
+                res_str += '}'
 
         return res_str
 

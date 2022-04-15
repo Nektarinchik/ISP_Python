@@ -2,7 +2,7 @@ import builtins
 import inspect
 import types
 
-from exceptions import JSONDecodeError
+from exceptions.exceptions import JSONDecodeError
 
 
 class JsonTypesDeserializer:

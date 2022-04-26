@@ -1,0 +1,53 @@
+{
+  "type": "FunctionType",
+  "__globals__": {
+    "c": 2,
+    "math": "module"
+  },
+  "co_nlocals": 2,
+  "co_argcount": 2,
+  "co_varnames": [
+    "x",
+    "y"
+  ],
+  "co_names": [
+    "math",
+    "sin",
+    "c"
+  ],
+  "co_cellvars": [],
+  "co_freevars": [],
+  "co_posonlyargcount": 0,
+  "co_kwonlyargcount": 0,
+  "co_firstlineno": 103,
+  "co_lnotab": [
+    0,
+    2
+  ],
+  "co_stacksize": 4,
+  "co_code": [
+    116,
+    0,
+    160,
+    1,
+    124,
+    0,
+    124,
+    1,
+    20,
+    0,
+    116,
+    2,
+    20,
+    0,
+    161,
+    1,
+    83,
+    0
+  ],
+  "co_name": "f",
+  "co_consts": [
+    null
+  ],
+  "co_flags": 67
+}

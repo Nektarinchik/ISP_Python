@@ -340,7 +340,7 @@ class YamlTomlTypesSerializer:
             try:
                 obj = globs[name]
 
-            except KeyError as err:
+            except KeyError:
                 continue
 
             try:

@@ -1,2 +1,6 @@
-name: abs
-type: BuiltinFunctionType
+- 1
+- str
+- null
+- []
+- {}
+- true

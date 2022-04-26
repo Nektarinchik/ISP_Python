@@ -412,12 +412,9 @@ class JsonTypesSerializer:
 
                 raise SystemExit(1)
 
-
-
             if counter == len(local_names):
                 res_str += spaces
                 res_str += f'"{name}": {value_buff}\n'
-
             else:
                 res_str += spaces
                 res_str += f'"{name}": {value_buff},\n'

@@ -1,4 +1,8 @@
-{
-  "type": "BuiltinFunctionType",
-  "name": "abs"
-}
+[
+  1,
+  "str",
+  null,
+  [],
+  {},
+  true
+]

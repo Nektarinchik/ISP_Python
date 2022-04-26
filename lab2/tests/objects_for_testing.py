@@ -98,3 +98,8 @@ def function_with_function_from_math(x):
     print(sin)
 
     return sin
+
+c = 2
+def f(x, y):
+    global c
+    return math.sin(x * y * c)

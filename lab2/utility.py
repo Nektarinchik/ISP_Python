@@ -28,10 +28,6 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-# class args:
-#     format = 'yaml'
-#     path = r'C:\Users\MSI\Desktop\Git\ISP_Python\lab2\tests\buff.json'
-
 
 if __name__ == '__main__':
 

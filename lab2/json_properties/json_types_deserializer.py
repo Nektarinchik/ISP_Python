@@ -24,7 +24,7 @@ class JsonTypesDeserializer:
         for i in range(len(json_str)):
 
             """check if we are not inside a string, nested dictionary or list
-            before every character like {[,:]}"""
+            before every character like {[:]}"""
             if json_str[i] == start_square_bracket and not quotation_marks:
 
                 if len(figure_brackets) == 1 and len(square_brackets) == 0:

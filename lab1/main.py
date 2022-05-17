@@ -14,8 +14,4 @@ if __name__ == '__main__':
     else:
         n = int(n)
 
-    # text = input("Please enter a text: ")
-    # k = int(input("Please enter number of top N-grams, K: "))
-    # n = int(input("Please enter N: "))
-
     functions.get_info_about_text(text, n, k)

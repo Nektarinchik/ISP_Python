@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Author Articles{% endblock title %}
+
+{% block content %}
+
+    {% for article in articles %}
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <figure class="text-end">
+                    <blockquote class="blockquote">
+                        <p class="mb-0">{{ article.title }}</p>
+
+                    </blockquote>
+                    <figcaption class="blockquote-footer">
+                        {{ article.date }} <a href="{% url 'users/author_articles' article.author.id %}"><cite
+                            title="Source Title">{{ article.author }}</cite></a>
+                    </figcaption>
+                </figure>
+
+            </div>
+
+            <div class="card-body">
+                <p>{{ article.content }}</p>
+                {% if user == article.author %}
+                    <a class="btn btn-link" href="{% url 'article_edit' article.pk %}">Edit</a>
+                    | <a class="btn btn-link" href="{% url 'article_delete' article.pk %}">Delete</a>
+                {% endif %}
+            </div>
+
+            <div class="card-footer">
+                {% for comment in article.comments.all %}
+                    <p>
+                        <span class="fw-bold">{{ comment.author }} &middot;</span>
+                        {{ comment.comment }}
+                        {% if user == comment.author %}
+                            <a href="{% url 'comment_edit' pk_a=article.pk pk_c=comment.pk %}">Edit</a> |
+                            <a href="{% url 'comment_delete' pk_a=article.pk pk_c=comment.pk %}">Delete</a>
+                        {% endif %}
+                    </p>
+                    <div class="dropdown-divider"></div>
+                {% endfor %}
+                <p><a class="btn btn-link" href="{% url 'comment_new' pk_a=article.pk %}">+ New Comment</a></p>
+            </div>
+
+        </div>
+
+        {% if not forloop.last %}
+            <div class="dropdown-divider"></div>
+        {% endif %}
+
+    {% endfor %}
+
+{% endblock content %}

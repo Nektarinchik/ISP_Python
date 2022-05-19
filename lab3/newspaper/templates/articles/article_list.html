@@ -4,6 +4,20 @@
 
 {% block content %}
 
+    <aside>
+        <h2 class="categories">Authors:</h2>
+        <ul class="list-group">
+            {% for author in all_authors %}
+                <a href="{% url 'users/author_articles' author.pk %}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-link"></i>
+                    {{ author }}
+                </a>
+            {% empty %}
+                <p class="category">- No authors</p>
+            {% endfor %}
+        </ul>
+    </aside>
+
     {% for article in articles %}
 
         <div class="card">

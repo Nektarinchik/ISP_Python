@@ -48,7 +48,6 @@ class ArticleCreatePageTests(TestCase):
             'title': 'test_title',
             'content': 'test_content'
         })
-        logger.debug(response.url)
         self.assertEqual(response.status_code, 302)
 
         url_pattern = re.compile(r'/articles/\d+/')
@@ -138,7 +137,6 @@ class ArticleUpdatePageTests(TestCase):
         self.assertEqual(response.status_code, 302)
 
         url_pattern = re.compile(r'/articles/\d+/')
-        logger.debug(response.url)
         self.assertTrue(re.match(url_pattern, response.url) is not None)
 
 

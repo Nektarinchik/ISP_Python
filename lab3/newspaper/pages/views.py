@@ -9,6 +9,5 @@ from articles.views import logger
 
 
 class HomepageView(ListView):
-    logger.info('enter to HomePageView')
     template_name = 'home.html'
     model = users.models.CustomUser

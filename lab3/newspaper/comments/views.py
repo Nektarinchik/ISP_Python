@@ -10,7 +10,6 @@ from articles.views import logger
 
 
 class CommentEditView(LoginRequiredMixin, UpdateView):
-    logger.info('enter to CommentEditView')
     login_url = 'login'
     model = models.Comment
     pk_url_kwarg = 'pk_c'
@@ -20,7 +19,6 @@ class CommentEditView(LoginRequiredMixin, UpdateView):
 
 
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
-    logger.info('enter to CommentDeleteView')
     login_url = 'login'
     model = models.Comment
     pk_url_kwarg = 'pk_c'
@@ -30,7 +28,6 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
-    logger.info('enter to CommentCreateView')
     login_url = 'login'
     model = models.Comment
     template_name = 'comments/comment_new.html'

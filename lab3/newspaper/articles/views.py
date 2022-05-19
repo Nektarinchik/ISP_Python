@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,20 +7,24 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, DetailView, CreateView
 
 from . import models
+from .async_requests import get_all_authors
 
 logger = logging.getLogger('main')
 
 
 class ArticleListView(LoginRequiredMixin, ListView):
-    logger.info('enter to ArticleListView')
     login_url = 'login'
     template_name = 'articles/article_list.html'
     model = models.Article
     context_object_name = 'articles'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['all_authors'] = asyncio.run(get_all_authors())
+        return context
+
 
 class ArticleDetailView(LoginRequiredMixin, DetailView):
-    logger.info('enter to ArticleDetailView')
     login_url = 'login'
     model = models.Article
     template_name = 'articles/article_detail.html'
@@ -27,7 +32,6 @@ class ArticleDetailView(LoginRequiredMixin, DetailView):
 
 
 class ArticleUpdateView(LoginRequiredMixin, UpdateView):
-    logger.info('enter to ArticleUpdateView')
     login_url = 'login'
     model = models.Article
     fields = ['title', 'content']
@@ -36,7 +40,6 @@ class ArticleUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class ArticleDeleteView(LoginRequiredMixin, DeleteView):
-    logger.info('enter to ArticleDeleteView')
     login_url = 'login'
     model = models.Article
     template_name = 'articles/article_delete.html'
@@ -45,7 +48,6 @@ class ArticleDeleteView(LoginRequiredMixin, DeleteView):
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
-    logger.info('enter to ArticleCreateView')
     login_url = 'login'
     model = models.Article
     template_name = 'articles/article_new.html'

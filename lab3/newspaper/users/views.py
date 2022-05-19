@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,19 +9,18 @@ from django.views.generic import CreateView, ListView
 
 import articles.models
 import users.models
-from . import forms
+
+from . import forms, async_requests
 from articles.views import logger
 
 
 class SignUpView(CreateView):
-    logger.info('enter to SignUpView')
     form_class = forms.CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
 
 class AuthorArticlesListView(LoginRequiredMixin, ListView):
-    logger.info('enter to AuthorArticlesListView')
     login_url = 'login'
     model = articles.models.Article
     template_name = 'users/author_articles.html'
@@ -28,4 +28,5 @@ class AuthorArticlesListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         auth = users.models.CustomUser.objects.get(pk=self.kwargs['pk'])
-        return articles.models.Article.objects.filter(author=auth)
+        coroutine = async_requests.get_articles_by_author(auth)
+        return asyncio.run(coroutine)

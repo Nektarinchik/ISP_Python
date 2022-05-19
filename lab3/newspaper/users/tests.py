@@ -35,6 +35,9 @@ class AuthorArticlesPageTests(TestCase):
 
     def test_author_articles_page_status_code_authenticated(self):
         self.client.force_login(user=self.user)
+        logger.debug(str(self.user.pk))
+        for obj in CustomUser.objects.all().values():
+            logger.debug(obj['id'])
         response = self.client.get(reverse('users/author_articles', args=[str(self.user.pk)]))
 
         self.assertEqual(response.status_code, 200)

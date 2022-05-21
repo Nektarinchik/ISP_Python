@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c5bf4bad-b080-4893-baed-31985e945254" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/lab3/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources.local.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/newspaper_db.5GsUeA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/newspaper_db.5GsUeA/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/newspaper_db.5GsUeA/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/newspaper_db.5GsUeA/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/dataSources/bca5f39e-9e6f-4585-bab2-b0f492b16b54/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/newspaper.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/async_requests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/migrations/0002_article_content.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/migrations/0003_comment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/migrations/0004_alter_comment_article.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/migrations/0005_alter_article_author_delete_comment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/articles/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/comments/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/information.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/newspaper/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/newspaper/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/newspaper/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/newspaper/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/newspaper/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/pages/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/static/css/base.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/articles/article_delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/articles/article_detail.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/articles/article_edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/articles/article_list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/articles/article_new.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/base.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/comments/comment_delete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/comments/comment_edit.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/comments/comment_new.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/home.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_change_done.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_change_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_reset_complete.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_reset_confirm.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_reset_done.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_reset_email.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_reset_form.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/registration/password_reset_subject.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/signup.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/templates/users/author_articles.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/async_requests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/forms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lab3/newspaper/users/views.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="29TONl0nRY2zHfuOgw5bGRSHm2k" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/ermol/OneDrive/Рабочий стол/Git"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c5bf4bad-b080-4893-baed-31985e945254" name="Changes" comment="" />
+      <created>1653133572449</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1653133572449</updated>
+      <workItem from="1653133574351" duration="95000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 import os.path
 import logging
 from pathlib import Path
@@ -21,15 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-u8hq92@n=-g2#r37+k_pe7^d^g9bf9+yz2mf$$36a-##g=$uf-'
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = 'django-insecure-u8hq92@n=-g2#r37+k_pe7^d^g9bf9+yz2mf$$36a-##g=$uf-'
+# SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = True
+# DEBUG = int(os.environ.get("DEBUG", default=0))
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -117,28 +118,39 @@ WSGI_APPLICATION = 'newspaper.wsgi.application'
 
 
 # Database
+# DATABASES = {
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'newspaper_db',
 #         'USER': 'postgres',
-#         'PASSWORD': 'nikita123',
-#         'HOST': 'localhost',
+#         'HOST': 'db',
 #         'PORT': '5432'
 #     }
 # }
+
+# DEFAULT:
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'db',
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'newspaper_db',
+        'USER': 'postgres',
+        'PASSWORD': 'nikita123',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('POSTGRES_NAME'),
+#         'USER': os.environ.get('POSTGRES_USER'),
+#         'PASSWORD': os.environ.get('POSTGRESQL_PASS'),
+#         'HOST': os.environ.get('POSTGRESQL_HOST'),
+#         'PORT': os.environ.get('POSTGRESQL_PORT'),
+#     }
+# }
 
 
 # Password validation

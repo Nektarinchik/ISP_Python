@@ -1,26 +1,39 @@
 version: '3'
 
 services:
-  web:
-    build: ./web
-    command: sh -c "python manage.py runserver 0.0.0.0:8000"
+  db:
+    image: postgres:14.3-alpine
     volumes:
-      - .:/web_app
-    ports:
-      - '8000:8000'
+      - newspaper_db:/var/lib/postgresql/data/
+    hostname: db
     environment:
       - POSTGRES_NAME=newspaper_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=nikita123
-    depends_on:
-      - db
-    env_file:
-      - .env.dev
-  db:
-    image: postgres:14.3-alpine
+    networks:
+      some_network:
+  web:
+    build: .
+    command: python /usr/src/newspaper/manage.py runserver 0.0.0.0:8000
     volumes:
-      - /var/lib/postgresql/data/
+      - .:/usr/src/newspaper
+    ports:
+      - 8000:8000
     environment:
+      - POSTGRES_NAME=newspaper_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=nikita123
-      - POSTGRES_DB=newspaper_db
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+    links:
+      - db:db
+    networks:
+      some_network:
+
+networks:
+ some_network:
+
+volumes:
+  newspaper_db:

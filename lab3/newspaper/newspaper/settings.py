@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-u8hq92@n=-g2#r37+k_pe7^d^g9bf9+yz2mf$$36a-##g=$uf-'
-# SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY") or "super-secret-key"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -144,11 +144,11 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('POSTGRES_NAME'),
-#         'USER': os.environ.get('POSTGRES_USER'),
-#         'PASSWORD': os.environ.get('POSTGRESQL_PASS'),
-#         'HOST': os.environ.get('POSTGRESQL_HOST'),
-#         'PORT': os.environ.get('POSTGRESQL_PORT'),
+#         'NAME': os.environ.get('POSTGRES_NAME', 'newspaper_db'),
+#         'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'nikita123'),
+#         'HOST': os.environ.get('POSTGRES_DB', 'localhost'),
+#         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
 #     }
 # }
 

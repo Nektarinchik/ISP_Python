@@ -1,77 +1,26 @@
 version: "3.9"
 
 services:
-  postgres_db:
-    container_name: postgres_db
-    image: postgres:14.3
-    ports:
-      - "5432:5432"
+  db:
+    image: postgres
     volumes:
-      - postgres_db:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=newspaper_db_compose
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-    networks:
-      - postgres_db
+      - POSTGRES_PASSWORD=nikita123
+      - POSTGRES_HOST=db
   web:
-    image: web:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
     command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
     ports:
       - "8000:8000"
-    volumes:
-      - .:/code
     environment:
-      - POSTGRES_NAME=postgres
+      - POSTGRES_NAME=newspaper_db_compose
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres_db
-      - POSTGRES_PORT=5432
+      - POSTGRES_PASSWORD=nikita123
+      - POSTGRES_HOST=db
     depends_on:
-      postgres_db:
-        condition: service_healthy
-  migration:
-    build:
-      context: .
-      dockerfile: Migrations.Dockerfile
-    command: python manage.py migrate --noinput
-    volumes:
-      - .:/code
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres_db
-      - POSTGRES_PORT=5432
-    depends_on:
-      - postgres_db
-      - web
-  pgadmin:
-    container_name: pgadmin_container
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "ermolen2003@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "nikita123"
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    restart: unless-stopped
-    networks:
-      - postgres_db
-volumes:
-  postgres_db:
-
-networks:
-  postgres_db:
-    driver: bridge
+      - db

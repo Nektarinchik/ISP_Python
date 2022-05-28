@@ -150,6 +150,7 @@ WSGI_APPLICATION = 'newspaper.wsgi.application'
 #         'PORT': '5432'
 #     }
 # }
+# COMPOSE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

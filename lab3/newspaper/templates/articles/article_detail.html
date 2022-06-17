@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ article.title }}</h4>
+            <h6 class="card-subtitle mb-2 text-muted">by {{ article.author }} | {{ article.date }}</h6>
+            <p class="card-text">{{ article.content }}</p>
+            <a href="{% url 'article_edit' article.pk %}" class="card-link">Edit</a>
+            <a href="{% url 'article_delete' article.pk %}" class="card-link">Delete</a>
+            <div class="dropdown-divider"></div>
+            {% for comment in article.comments.all %}
+                <p>
+                    <span class="fw-bold">{{ comment.author }} &middot;</span>
+                    {{ comment.comment }}
+                    {% if user == comment.author %}
+                        <a href="{% url 'comment_edit' pk_a=article.pk pk_c=comment.pk %}">Edit</a> |
+                        <a href="{% url 'comment_delete' pk_a=article.pk pk_c=comment.pk %}">Delete</a>
+                    {% endif %}
+                </p>
+                <div class="dropdown-divider"></div>
+            {% endfor %}
+            <p>Back to <a href="{% url 'article_list' %}">All Articles</a>.</p>
+        </div>
+    </div>
+
+{% endblock content %}

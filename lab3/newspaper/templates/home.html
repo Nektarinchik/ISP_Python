@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+    <style>
+        .container {
+            margin: 40px;
+        }
+    </style>
+
+    <div class="container-fluid bg-light text-dark p-5">
+
+        <div class="container bg-light p-5">
+            <h1 class="display-4">Newspaper app</h1>
+            <div class="dropdown-divider"></div>
+            <p class="lead">Made by <em>Nektarinchik</em></p>
+            <p class="lead">
+                <a class="btn btn-primary" href="{% url 'article_list' %}" role="button">
+                    View All Articles
+                </a>
+            </p>
+        </div>
+    </div>
+
+
+{% endblock content %}
